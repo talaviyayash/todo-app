@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section id="form-container" class="form-container">
+      <h1 id="heading">Add the data</h1>
+      <div class="name">
+        <label for="name">name:-</label>
+        <input type="text" name="" id="name" />
+        <br />
+        <br />
+      </div>
+      <div class="email">
+        <label for="email">email:-</label>
+        <input type="email" name="" id="email" />
+      </div>
+      <br /><br />
+      <div class="gender">
+        <p>Select your gender:-</p>
+        <input type="radio" name="gender" id="male" value="male" />
+        <label for="male">male</label><br />
+        <input type="radio" name="gender" id="female" value="female" />
+        <label for="female">female</label><br />
+      </div>
+      <br /><br />
+      <div class="hobby">
+        <p>Select your hobby:-</p>
+        <input type="radio" name="hobby" id="reading" value="reading" />
+        <label for="reading">Reading</label><br />
+        <input type="radio" name="hobby" id="traveling" value="traveling" />
+        <label for="traveling">traveling</label><br />
+        <input type="radio" name="hobby" id="sports" value="sports" />
+        <label for="sports">sports</label><br />
+      </div>
+      <br /><br />
+      <div class="country-show">
+        <label for="country">Choose a country:</label>
+        <select
+          name="country"
+          onclick="loadState(event)"
+          onchange="loadState(event)"
+          id="country"
+        ></select>
+      </div>
+      <br /><br />
+      <div class="state-show">
+        <label for="state">Choose a state:</label>
+        <select
+          name="state"
+          id="state"
+          onclick="loadCountry(event)"
+          onchange="loadCountry(event)"
+        ></select>
+      </div>
+      <br /><br />
+      <div class="city-show">
+        <label for="city">Choose a city:</label>
+        <select name="city" id="city"></select>
+      </div>
+      <br /><br />
+      <div class="action-form">
+        <button id="submit" onclick="submitForm()">submit</button>
+        <button id="update">update</button>
+        <button id="remove">remove</button>
+      </div>
+    </section>
+    <br /><br />
+    <section class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Hobby</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>City</th>
+            <th>Delete</th>
+            <th>Modify</th>
+          </tr>
+        </thead>
+        <tbody id="table-body-container"></tbody>
+      </table>
+    </section>
+    <script src="script.js"></script>
+  </body>
+</html>
