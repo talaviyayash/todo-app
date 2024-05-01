@@ -3,7 +3,7 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   padding: 0;
   margin: 0;
-  background-color: #dbdbdb;
+  background-color: #fafafa;
 }
 .form-container {
   display: flex;
@@ -57,6 +57,7 @@ td {
   color: red;
   font-size: 30px;
   font-weight: 800;
+  margin-right: 15px;
 }
 
 #functionality {
@@ -83,4 +84,57 @@ thead tr {
 .error {
   font-size: 14px;
   color: rgb(217, 59, 59);
+}
+.input-text {
+  width: 250px;
+  border-radius: 8px;
+  padding: 7px;
+  font-size: 20px;
+}
+.font {
+  font-size: 25px;
+  font-weight: 300;
+}
+.select-box {
+  padding: 6px;
+  width: 250px;
+  border-radius: 10px;
+  font-size: 21px;
+}
+.select-box-text {
+  margin-right: 20px;
+}
+#submit {
+  width: 175px;
+  font-size: 20px;
+  height: 50px;
+  border-radius: 23px;
+  background-color: black;
+  color: white;
+  border: 0px;
+  font-weight: 500;
+}
+#resetbtn {
+  border: 0px;
+  font-size: 20px;
+  width: 175px;
+  height: 50px;
+  border-radius: 23px;
+  background-color: #e55656;
+  color: white;
+  font-weight: 500;
+}
+h1 {
+  text-align: center;
+  font-size: 35px;
+}
+input[type="radio"],
+input[type="checkbox"] {
+  height: 15px;
+  width: 15px;
+  border: 0;
+}
+.for-radio-check {
+  font-size: 20px;
+  font-weight: 200;
 }

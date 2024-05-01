@@ -2,181 +2,86 @@ const dataOfTable = [
   {
     _id: Date.now(),
     name: "sdefs",
-    email: "das",
+    email: "yashtalaviya654@gmail.com",
     gender: "male",
     hobby: ["reading", "traveling"],
     country: { name: "india", _id: 1 },
     state: {
       _id: 1,
-      c_id: 1,
       name: "gujrat",
     },
     city: {
       _id: 1,
-      s_id: 1,
-      c_id: 1,
-      name: "ahmedabad",
+      name: "surat",
     },
   },
   {
     _id: Date.now() + 1,
     name: "sdesafs",
-    email: "das",
+    email: "yash@gmail.com",
     gender: "male",
     hobby: ["reading"],
     country: { name: "india", _id: 1 },
     state: {
       _id: 1,
-      c_id: 1,
       name: "gujrat",
     },
     city: {
       _id: 1,
-      s_id: 1,
-      c_id: 1,
-      name: "ahmedabad",
+      name: "surat",
     },
   },
 ];
-
-const countryName = [
+const country = [
   {
     _id: 1,
     name: "india",
+    states: [
+      {
+        _id: 1,
+        name: "gujrat",
+        city: [
+          { _id: 1, name: "surat" },
+          { _id: 2, name: "ahemdabad" },
+        ],
+      },
+      {
+        _id: 2,
+        name: "maharastra",
+        city: [
+          { _id: 1, name: "mumbai" },
+          { _id: 2, name: "nagpur" },
+        ],
+      },
+    ],
   },
   {
     _id: 2,
     name: "usa",
-  },
-];
-
-const stateName = [
-  {
-    _id: 1,
-    c_id: 1,
-    name: "gujrat",
-  },
-  {
-    c_id: 1,
-    _id: 2,
-    name: "haryana",
-  },
-  {
-    c_id: 1,
-    _id: 3,
-    name: "maharashtra",
-  },
-  {
-    c_id: 2,
-    _id: 4,
-    name: "california",
-  },
-  {
-    c_id: 2,
-    _id: 5,
-    name: "texas",
-  },
-  {
-    c_id: 2,
-    _id: 6,
-    name: "florida",
-  },
-];
-
-const cityName = [
-  {
-    _id: 1,
-    s_id: 1,
-    c_id: 1,
-    name: "ahmedabad",
-  },
-  {
-    _id: 2,
-    s_id: 1,
-    c_id: 1,
-    name: "gandhinagar",
-  },
-  {
-    _id: 3,
-    s_id: 1,
-    c_id: 1,
-    name: "surat",
-  },
-  {
-    _id: 4,
-    s_id: 2,
-    c_id: 1,
-    name: "faizabad",
-  },
-  {
-    _id: 5,
-    s_id: 2,
-    c_id: 1,
-    name: "farakhpur",
-  },
-  {
-    _id: 6,
-    s_id: 2,
-    c_id: 1,
-    name: "bhiwani",
-  },
-  {
-    _id: 7,
-    s_id: 3,
-    c_id: 1,
-    name: "mumbai",
-  },
-  {
-    _id: 8,
-    s_id: 3,
-    c_id: 1,
-    name: "Nagpur",
-  },
-  {
-    _id: 9,
-    s_id: 4,
-    c_id: 2,
-    name: "los angeles",
-  },
-  {
-    _id: 10,
-    s_id: 4,
-    c_id: 2,
-    name: "san francisco",
-  },
-  {
-    _id: 11,
-    s_id: 5,
-    c_id: 2,
-    name: "houston",
-  },
-  {
-    _id: 12,
-    s_id: 5,
-    c_id: 2,
-    name: "texas City",
-  },
-  {
-    _id: 13,
-    s_id: 6,
-    c_id: 2,
-    name: "miami",
-  },
-  {
-    _id: 14,
-    s_id: 6,
-    c_id: 2,
-    name: "orlando",
-  },
-  {
-    _id: 15,
-    s_id: 6,
-    c_id: 2,
-    name: "florida city",
+    states: [
+      {
+        _id: 1,
+        name: "california",
+        city: [
+          { _id: 1, name: "los angeles" },
+          { _id: 2, name: "san francisco" },
+        ],
+      },
+      {
+        _id: 2,
+        name: "texas",
+        city: [
+          { _id: 1, name: "houston" },
+          { _id: 2, name: "texas City" },
+        ],
+      },
+    ],
   },
 ];
 let indexWhereToEdit;
 let forDisabledTheChild = {};
+let indexOfCountry;
+let indexOfState;
 const tableBodyElement = document.getElementById("table-body-container");
 const stateSelectElement = document.getElementById("state");
 const countrySelectElement = document.getElementById("country");
@@ -222,8 +127,8 @@ function showDataInTable(data) {
 }
 function firstTimeShow() {
   indexWhereToEdit = undefined;
-  countrySelectElement.innerHTML = `<option value="" selected>select one</option>`;
-  countryName.forEach((val) => {
+  countrySelectElement.innerHTML = `<option value="" selected>select country</option>`;
+  country.forEach((val) => {
     countrySelectElement.innerHTML =
       countrySelectElement.innerHTML +
       `
@@ -232,34 +137,44 @@ function firstTimeShow() {
   });
 }
 function loadState(e) {
-  citySelectElement.innerHTML = `<option value="" selected>select one</option>`;
-  stateSelectElement.innerHTML = `<option value="" selected>select one</option>`;
+  citySelectElement.innerHTML = `<option value="" selected>select city</option>`;
+  stateSelectElement.innerHTML = `<option value="" selected>select state</option>`;
   const validOrNot = validCountry();
   if (!validOrNot) {
     return false;
   }
   const idOfCountry = e.target.value;
-  stateName.forEach((value) => {
-    if (idOfCountry == value.c_id) {
-      stateSelectElement.innerHTML =
-        stateSelectElement.innerHTML +
-        `<option value="${value._id}">${value.name}</option>`;
+  country.forEach((value) => {
+    if (value._id == idOfCountry) {
+      value.states.forEach((val) => {
+        stateSelectElement.innerHTML =
+          stateSelectElement.innerHTML +
+          `<option value="${val._id}">${val.name}</option>`;
+      });
     }
   });
+  // country[idOfCountry].forEach((value, index) => {});
 }
 
 function loadCity(e) {
   const validOrNot = validState();
-  citySelectElement.innerHTML = `<option value="" selected>select one</option>`;
+  citySelectElement.innerHTML = `<option value="" selected>select city</option>`;
   if (!validOrNot) {
     return false;
   }
   const idOfState = e.target.value;
-  cityName.forEach((value) => {
-    if (idOfState == value.s_id) {
-      citySelectElement.innerHTML =
-        citySelectElement.innerHTML +
-        `<option value="${value._id}">${value.name}</option>`;
+  const idOfCountry = countrySelectElement.value;
+  country.forEach((value) => {
+    if (value._id == idOfCountry) {
+      value.states.forEach((val) => {
+        if (val._id == idOfState) {
+          val.city.forEach((value) => {
+            citySelectElement.innerHTML =
+              citySelectElement.innerHTML +
+              `<option value="${value._id}">${value.name}</option>`;
+          });
+        }
+      });
     }
   });
 }
@@ -298,15 +213,16 @@ function submitForm(e) {
   const countryValue = countrySelectElement.value;
   const stateValue = stateSelectElement.value;
   const cityValue = citySelectElement.value;
+
   if (anyError()) {
-    const countryValueFromId = countryName.find((value) => {
+    const countryValueFromId = country.find((value) => {
       return value._id == countryValue ? true : false;
     });
-    const cityValueFromId = cityName.find((value) => {
-      return value._id == cityValue ? true : false;
-    });
-    const stateValueFromId = stateName.find((value) => {
+    const stateValueFromId = countryValueFromId.states.find((value) => {
       return value._id == stateValue ? true : false;
+    });
+    const cityValueFromId = stateValueFromId.city.find((value) => {
+      return value._id == cityValue ? true : false;
     });
     const newObj = {
       _id: new Date().getMilliseconds(),
@@ -314,9 +230,18 @@ function submitForm(e) {
       gender: selectedGenderValue,
       name: nameValue,
       email: emailValue,
-      state: stateValueFromId,
-      city: cityValueFromId,
-      country: countryValueFromId,
+      state: {
+        _id: stateValueFromId._id,
+        name: stateValueFromId.name,
+      },
+      city: {
+        _id: cityValueFromId._id,
+        name: cityValueFromId.name,
+      },
+      country: {
+        _id: countryValueFromId._id,
+        name: countryValueFromId.name,
+      },
     };
     dataOfTable[indexWhereToEdit] = newObj;
     resetForm();
@@ -327,12 +252,22 @@ function submitForm(e) {
 
 function anyError() {
   const forName = validName();
+  const forEmail = validEmail();
   const forGender = validGender();
   const forHobby = validHobby();
   const forCountry = validCountry();
   const forState = validState();
   const forCity = validCity();
-  if (forName && forGender && forHobby && forCountry && forState && forCity) {
+
+  if (
+    forName &&
+    forEmail &&
+    forGender &&
+    forHobby &&
+    forCountry &&
+    forState &&
+    forCity
+  ) {
     return true;
   }
   return false;
@@ -356,6 +291,7 @@ function validEmail() {
     return false;
   } else {
     emailError.innerHTML = "";
+    return true;
   }
 }
 function validGender() {
@@ -428,11 +364,14 @@ function editFunc(e, idWhereToUpdate) {
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
   countrySelectElement.innerHTML;
-  citySelectElement.innerHTML = `<option value="" >select one</option>`;
-  stateSelectElement.innerHTML = `<option value="" >select one</option>`;
-  countrySelectElement.innerHTML = `<option value="" >select one</option>`;
-  countryName.forEach((value) => {
+  citySelectElement.innerHTML = `<option value="" >select city</option>`;
+  stateSelectElement.innerHTML = `<option value="" >select state</option>`;
+  countrySelectElement.innerHTML = `<option value="" >select country</option>`;
+  let countryIndex;
+  let stateIndex;
+  country.forEach((value, index) => {
     if (value._id == findValue.country._id) {
+      countryIndex = index;
       countrySelectElement.innerHTML =
         countrySelectElement.innerHTML +
         `
@@ -446,14 +385,15 @@ function editFunc(e, idWhereToUpdate) {
     `;
     }
   });
-  stateName.forEach((value) => {
+  country[countryIndex].states.forEach((value, index) => {
     if (value._id == findValue.state._id) {
+      stateIndex = index;
       stateSelectElement.innerHTML =
         stateSelectElement.innerHTML +
         `
   <option value="${value._id}" selected>${value.name}</option>;
     `;
-    } else if (value.c_id == findValue.country._id) {
+    } else {
       stateSelectElement.innerHTML =
         stateSelectElement.innerHTML +
         `
@@ -461,14 +401,14 @@ function editFunc(e, idWhereToUpdate) {
     `;
     }
   });
-  cityName.forEach((value) => {
+  country[countryIndex].states[stateIndex].city.forEach((value) => {
     if (value._id == findValue.city._id) {
       citySelectElement.innerHTML =
         citySelectElement.innerHTML +
         `
   <option value="${value._id}" selected>${value.name}</option>;
     `;
-    } else if (value.s_id == findValue.state._id) {
+    } else {
       citySelectElement.innerHTML =
         citySelectElement.innerHTML +
         `
@@ -508,8 +448,8 @@ function resetForm() {
   });
   formElement.reset();
   firstTimeShow();
-  citySelectElement.innerHTML = `<option value="" selected>select one</option>`;
-  stateSelectElement.innerHTML = `<option value="" selected>select one</option>`;
+  citySelectElement.innerHTML = `<option value="" selected>select city</option>`;
+  stateSelectElement.innerHTML = `<option value="" selected>select state</option>`;
   submitBtnElement.innerHTML = "Submit";
   showDataInTable(dataOfTable);
 }
