@@ -1,6 +1,6 @@
 const dataOfTable = [
   {
-    _id: new Date().getMilliseconds(),
+    _id: Date.now(),
     name: "sdefs",
     email: "das",
     gender: "male",
@@ -19,7 +19,7 @@ const dataOfTable = [
     },
   },
   {
-    _id: new Date().getMilliseconds() + 1,
+    _id: Date.now() + 1,
     name: "sdesafs",
     email: "das",
     gender: "male",
@@ -175,7 +175,7 @@ const cityName = [
     name: "florida city",
   },
 ];
-let cuntryCurrentIndex = 0;
+
 const tableBodyElement = document.getElementById("table-body-container");
 const stateSelectElement = document.getElementById("state");
 const countrySelectElement = document.getElementById("country");
@@ -189,14 +189,15 @@ const hobbyError = document.getElementById("hobbyError");
 const countryError = document.getElementById("countryError");
 const stateError = document.getElementById("stateError");
 const cityError = document.getElementById("cityError");
+const searchInputElement = document.getElementById("search-input");
 const formElement = document.getElementById("data-enter-form");
 const submitBtnElement = document.getElementById("submit");
 const formatTableElement = document.getElementById("format");
 formElement.addEventListener("submit", submitForm);
 let indexWhereToEdit;
-showDataInTable(dataOfTable);
 firstTimeShow();
-// countrySelectElement.addEventListener(onchange, validCountry);
+showDataInTable(dataOfTable);
+
 function showDataInTable(data) {
   tableBodyElement.innerHTML = "";
   data.forEach((val) => {
@@ -285,6 +286,7 @@ function howManyHobbyIsCheaked() {
 
 function submitForm(e) {
   if (indexWhereToEdit == undefined) {
+    indexWhereToEdit = dataOfTable.length;
   }
   e.preventDefault();
   const nameValue = nameInputElement.value.trim();
@@ -319,6 +321,7 @@ function submitForm(e) {
     dataOfTable[indexWhereToEdit] = newObj;
     resetForm();
   }
+  indexWhereToEdit == undefined;
 }
 
 function anyError() {
@@ -408,7 +411,7 @@ function validCity() {
   }
 }
 function editFunc(idWhereToUpdate) {
-  submitBtnElement.innerHTML = "Update";
+  submitBtnElement.innerHTML = "Update the data";
   let indexToAdd = dataOfTable.length;
   const findValue = dataOfTable.find((value, index) => {
     if (value._id == idWhereToUpdate) {
@@ -484,62 +487,32 @@ function editFunc(idWhereToUpdate) {
       }
     });
   });
-  formElement.addEventListener("submit", editAllData);
-  formElement.removeEventListener("submit", submitForm);
-}
-function editAllData(event) {
-  event.preventDefault();
-  const nameValue = nameInputElement.value.trim();
-  const emailValue = emailInputElement.value.trim();
-  const selectedGenderValue = document.querySelector(
-    'input[name="gender"]:checked'
-  )?.value;
-  const hobbyValue = howManyHobbyIsCheaked();
-  const countryValue = countrySelectElement.value;
-  const stateValue = stateSelectElement.value;
-  const cityValue = citySelectElement.value;
-  if (anyError()) {
-    const countryValueFromId = countryName.find((value) => {
-      return value._id == countryValue ? true : false;
-    });
-    const cityValueFromId = cityName.find((value) => {
-      return value._id == cityValue ? true : false;
-    });
-    const stateValueFromId = stateName.find((value) => {
-      return value._id == stateValue ? true : false;
-    });
-    dataOfTable[indexWhereToEdit] = {
-      ...dataOfTable[indexWhereToEdit],
-      hobby: hobbyValue,
-      gender: selectedGenderValue,
-      email: emailValue,
-      name: nameValue,
-      state: stateValueFromId,
-      city: cityValueFromId,
-      country: countryValueFromId,
-    };
-    showDataInTable(dataOfTable);
-    formElement.removeEventListener("submit", editAllData);
-    formElement.addEventListener("submit", submitForm);
-    formElement.reset();
-    indexWhereToEdit = dataOfTable.length;
-    resetForm();
-  }
 }
 function resetForm() {
+  formatTableElement.selectedIndex = "0";
+  searchInputElement.value = "";
+  [
+    nameError,
+    emailError,
+    genderError,
+    hobbyError,
+    countryError,
+    stateError,
+    cityError,
+  ].forEach((element) => {
+    element.innerHTML = "";
+  });
   formElement.reset();
   firstTimeShow();
   citySelectElement.innerHTML = `<option value="" selected>select one</option>`;
   stateSelectElement.innerHTML = `<option value="" selected>select one</option>`;
   submitBtnElement.innerHTML = "Submit";
-  formElement.removeEventListener("submit", editAllData);
-  formElement.addEventListener("submit", submitForm);
   showDataInTable(dataOfTable);
 }
 function formateTheTable() {
   if (formatTableElement.value == "ascending") {
     ascending();
-  } else {
+  } else if (formatTableElement.value == "descending") {
     descending();
   }
 }
@@ -555,7 +528,6 @@ function descending() {
   });
   showDataInTable(dataOfTable);
 }
-
 function search(e) {
   const filterdData = dataOfTable.filter((value) => {
     if (value.name.match(e.target.value.trim())) {

@@ -118,13 +118,9 @@
     <div id="functionality">
       <div>
         Formate data :-
-        <select
-          name="orderInTable"
-          onclick="formateTheTable()"
-          onchange="formateTheTable()"
-          id="format"
-        >
-          <option value="ascending" selected>ascending</option>
+        <select name="orderInTable" onchange="formateTheTable()" id="format">
+          <option value="" selected>select choice</option>
+          <option value="ascending">ascending</option>
           <option value="descending">descending</option>
         </select>
       </div>
@@ -132,7 +128,7 @@
       <br />
       <form>
         Enter the name you want to search :-
-        <input type="text " oninput="search(event)" />
+        <input type="text" id="search-input" oninput="search(event)" />
       </form>
     </div>
     <section class="table-container">
