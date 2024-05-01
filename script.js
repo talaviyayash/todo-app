@@ -175,7 +175,8 @@ const cityName = [
     name: "florida city",
   },
 ];
-
+let indexWhereToEdit;
+let forDisabledTheChild = {};
 const tableBodyElement = document.getElementById("table-body-container");
 const stateSelectElement = document.getElementById("state");
 const countrySelectElement = document.getElementById("country");
@@ -194,7 +195,6 @@ const formElement = document.getElementById("data-enter-form");
 const submitBtnElement = document.getElementById("submit");
 const formatTableElement = document.getElementById("format");
 formElement.addEventListener("submit", submitForm);
-let indexWhereToEdit;
 firstTimeShow();
 showDataInTable(dataOfTable);
 
@@ -213,10 +213,10 @@ function showDataInTable(data) {
             <td>${val.city.name}</td>
             <td><button onclick="deleteElement(${
               val._id
-            })" class="table-delete">Delete</button></td>
-            <td><a onclick="editFunc(${
-              val._id
-            })" href="#form-container"><button class="table-remove">Edit</button></a></td>
+            })" class="table-delete">Delete</button>
+              <a onclick="editFunc(event,${
+                val._id
+              })" href="#form-container"><button class="table-remove">Edit</button></a></td>
           </tr>`;
   });
 }
@@ -320,6 +320,7 @@ function submitForm(e) {
     };
     dataOfTable[indexWhereToEdit] = newObj;
     resetForm();
+    forDisabledTheChild.disabled = false;
   }
   indexWhereToEdit == undefined;
 }
@@ -410,7 +411,10 @@ function validCity() {
     return true;
   }
 }
-function editFunc(idWhereToUpdate) {
+function editFunc(e, idWhereToUpdate) {
+  forDisabledTheChild.disabled = false;
+  forDisabledTheChild = e.target.parentNode.parentNode.childNodes[0];
+  forDisabledTheChild.disabled = true;
   submitBtnElement.innerHTML = "Update the data";
   let indexToAdd = dataOfTable.length;
   const findValue = dataOfTable.find((value, index) => {
@@ -510,10 +514,13 @@ function resetForm() {
   showDataInTable(dataOfTable);
 }
 function formateTheTable() {
+  searchInputElement.value = "";
   if (formatTableElement.value == "ascending") {
     ascending();
   } else if (formatTableElement.value == "descending") {
     descending();
+  } else {
+    showDataInTable(dataOfTable);
   }
 }
 function ascending() {
