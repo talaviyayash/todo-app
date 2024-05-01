@@ -104,6 +104,10 @@ firstTimeShow();
 showDataInTable(dataOfTable);
 
 function showDataInTable(data) {
+  if (data.length == 0) {
+    tableBodyElement.innerHTML = `<tr class="center">There is no data avilable</tr>`;
+    return 0;
+  }
   tableBodyElement.innerHTML = "";
   data.forEach((val) => {
     tableBodyElement.innerHTML =
