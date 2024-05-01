@@ -1,42 +1,28 @@
-const countryName1 = [
+const countryName = [
   {
-    _id: 1,
-    name: "india",
+    india: [{ asa: ["dascsd", "dscs"] }, { maharastra: ["dascsd", "dscs"] }],
   },
   {
-    _id: 2,
-    name: "india",
+    afaric: [
+      { gujrati: ["dascsd", "dscs"] },
+      { maharastra: ["dasdsfvdsfdscsd", "dscs"] },
+    ],
   },
   {
-    _id: 3,
-    name: "india",
-  },
-  {
-    _id: 4,
-    name: "india",
+    asdas: [{ sdcqwsd: ["dascascdscsd", "dscs"] }, { sdcsd: ["sdc", "sdcsd"] }],
   },
 ];
 
-const stateName1 = [
+const country = [
   {
-    _id: 1,
-    c_id: 1,
-    name: "india",
-  },
-  {
-    c_id: 1,
-    _id: 2,
-    name: "india",
-  },
-  {
-    c_id: 1,
-    _id: 3,
-    name: "india",
-  },
-  {
-    c_id: 2,
-    _id: 4,
-    name: "india",
+    name: "India",
+    states: [
+      {
+        id: "01",
+        name: "gujrat",
+        city: [{ name: "surat", id: "01" }],
+      },
+    ],
   },
 ];
 
