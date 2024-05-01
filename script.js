@@ -182,7 +182,13 @@ const countrySelectElement = document.getElementById("country");
 const citySelectElement = document.getElementById("city");
 const nameInputElement = document.getElementById("name");
 const emailInputElement = document.getElementById("email");
-const errorElement = document.getElementById("error");
+const nameError = document.getElementById("nameError");
+const emailError = document.getElementById("emailError");
+const genderError = document.getElementById("genderError");
+const hobbyError = document.getElementById("hobbyError");
+const countryError = document.getElementById("countryError");
+const stateError = document.getElementById("stateError");
+const cityError = document.getElementById("cityError");
 const formElement = document.getElementById("data-enter-form");
 const submitBtnElement = document.getElementById("submit");
 const formatTableElement = document.getElementById("format");
@@ -190,6 +196,7 @@ formElement.addEventListener("submit", submitForm);
 let indexWhereToEdit;
 showDataInTable(dataOfTable);
 firstTimeShow();
+// countrySelectElement.addEventListener(onchange, validCountry);
 function showDataInTable(data) {
   tableBodyElement.innerHTML = "";
   data.forEach((val) => {
@@ -224,9 +231,13 @@ function firstTimeShow() {
   });
 }
 function loadState(e) {
-  const idOfCountry = e.target.value;
   citySelectElement.innerHTML = `<option value="" selected>select one</option>`;
   stateSelectElement.innerHTML = `<option value="" selected>select one</option>`;
+  const validOrNot = validCountry();
+  if (!validOrNot) {
+    return false;
+  }
+  const idOfCountry = e.target.value;
   stateName.forEach((value) => {
     if (idOfCountry == value.c_id) {
       stateSelectElement.innerHTML =
@@ -237,8 +248,12 @@ function loadState(e) {
 }
 
 function loadCity(e) {
-  const idOfState = e.target.value;
+  const validOrNot = validState();
   citySelectElement.innerHTML = `<option value="" selected>select one</option>`;
+  if (!validOrNot) {
+    return false;
+  }
+  const idOfState = e.target.value;
   cityName.forEach((value) => {
     if (idOfState == value.s_id) {
       citySelectElement.innerHTML =
@@ -251,14 +266,12 @@ function loadCity(e) {
 function deleteElement(elementToBeDeleted) {
   if (confirm("Are you sure you want to delete data?")) {
     dataOfTable.forEach((value, index) => {
-      console.log(elementToBeDeleted);
       if (value._id == elementToBeDeleted) {
         dataOfTable.splice(index, 1);
       }
     });
     showDataInTable(dataOfTable);
     resetForm();
-    errorElement.innerHTML = "";
   }
 }
 function howManyHobbyIsCheaked() {
@@ -270,7 +283,9 @@ function howManyHobbyIsCheaked() {
   return allValue;
 }
 
-function submitForm(e, whereToAdd = dataOfTable.length) {
+function submitForm(e) {
+  if (indexWhereToEdit == undefined) {
+  }
   e.preventDefault();
   const nameValue = nameInputElement.value.trim();
   const emailValue = emailInputElement.value.trim();
@@ -281,18 +296,7 @@ function submitForm(e, whereToAdd = dataOfTable.length) {
   const countryValue = countrySelectElement.value;
   const stateValue = stateSelectElement.value;
   const cityValue = citySelectElement.value;
-
-  if (
-    anyError(
-      nameValue,
-      emailValue,
-      selectedGenderValue,
-      hobbyValue,
-      countryValue,
-      stateValue,
-      cityValue
-    )
-  ) {
+  if (anyError()) {
     const countryValueFromId = countryName.find((value) => {
       return value._id == countryValue ? true : false;
     });
@@ -312,61 +316,95 @@ function submitForm(e, whereToAdd = dataOfTable.length) {
       city: cityValueFromId,
       country: countryValueFromId,
     };
-    dataOfTable[whereToAdd] = newObj;
+    dataOfTable[indexWhereToEdit] = newObj;
     resetForm();
-    errorElement.innerHTML = "";
   }
 }
 
-function anyError(
-  nameValue,
-  emailValue,
-  selectedGenderValue,
-  hobbyValue,
-  countryValue,
-  stateValue,
-  cityValue
-) {
-  // if (nameValue == "") {
-  //   errorElement.innerHTML = "Please enter the name. ";
-  //   return false;
-  // }
-  // if (
-  //   emailValue == "" ||
-  //   !(emailValue.search(/^[^\s@]+@[^\s@]+\.[^\s@]+$/) == 0)
-  // ) {
-  //   errorElement.innerHTML = "Please enter the valid email. ";
-  //   return false;
-  // }
-  // if (!selectedGenderValue) {
-  //   errorElement.innerHTML = "Please select your gender. ";
-  //   return false;
-  // }
-  // if (hobbyValue.length == 0) {
-  //   errorElement.innerHTML = "Please select your hobby ";
-  //   return false;
-  // }
-  // if (!countryValue) {
-  //   errorElement.innerHTML = "Please select your country ";
-  //   return false;
-  // }
-  // if (!stateValue) {
-  //   errorElement.innerHTML = "Please select your state ";
-  //   return false;
-  // }
-  // if (!cityValue) {
-  //   errorElement.innerHTML = "Please select your city ";
-  //   return false;
-  // }
-  // return true;
+function anyError() {
+  const forName = validName();
+  const forGender = validGender();
+  const forHobby = validHobby();
+  const forCountry = validCountry();
+  const forState = validState();
+  const forCity = validCity();
+  if (forName && forGender && forHobby && forCountry && forState && forCity) {
+    return true;
+  }
+  return false;
 }
 function validName() {
-  console.log("dsklck");
   const nameValue = nameInputElement.value.trim();
   const regexForName = /^[a-zA-Z\s-]+$/;
-  if (!(nameValue == "") && nameValue.search(regexForName)) {
-    errorElement.innerHTML = "Please enter the name. ";
+  if (nameValue.length < 4 || !(nameValue.search(regexForName) == 0)) {
+    nameError.innerHTML = "Please enter the name valid name. ";
     return false;
+  } else {
+    nameError.innerHTML = "";
+    return true;
+  }
+}
+function validEmail() {
+  const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailValue = emailInputElement.value.trim();
+  if (emailValue.length < 6 || !(emailValue.search(regexForEmail) == 0)) {
+    emailError.innerHTML = "Please enter the valid email.";
+    return false;
+  } else {
+    emailError.innerHTML = "";
+  }
+}
+function validGender() {
+  const selectedGenderValue = document.querySelector(
+    'input[name="gender"]:checked'
+  )?.value;
+
+  if (!selectedGenderValue) {
+    genderError.innerHTML = "Please select your gender. ";
+    return false;
+  } else {
+    genderError.innerHTML = "";
+    return true;
+  }
+}
+function validHobby() {
+  const hobbyValue = howManyHobbyIsCheaked();
+  if (hobbyValue.length == 0) {
+    hobbyError.innerHTML = "Please select your hobby ";
+    return false;
+  } else {
+    hobbyError.innerHTML = "";
+    return true;
+  }
+}
+function validCountry() {
+  const countryValue = countrySelectElement.value.trim();
+  if (!countryValue) {
+    countryError.innerHTML = "Please select your country";
+    return false;
+  } else {
+    countryError.innerHTML = "";
+    return true;
+  }
+}
+function validState() {
+  const stateValue = stateSelectElement.value.trim();
+  if (!stateValue) {
+    stateError.innerHTML = "Please select your state";
+    return false;
+  } else {
+    stateError.innerHTML = "";
+    return true;
+  }
+}
+function validCity() {
+  const cityValue = citySelectElement.value;
+  if (!cityValue) {
+    cityError.innerHTML = "Please select your city";
+    return false;
+  } else {
+    cityError.innerHTML = "";
+    return true;
   }
 }
 function editFunc(idWhereToUpdate) {
@@ -379,7 +417,6 @@ function editFunc(idWhereToUpdate) {
     }
     return false;
   });
-  console.log(findValue);
   indexWhereToEdit = indexToAdd;
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
@@ -432,7 +469,6 @@ function editFunc(idWhereToUpdate) {
     `;
     }
   });
-
   document.querySelectorAll('input[name="gender"]').forEach((element) => {
     if (element.value == findValue.gender) {
       element.checked = true;
@@ -462,17 +498,7 @@ function editAllData(event) {
   const countryValue = countrySelectElement.value;
   const stateValue = stateSelectElement.value;
   const cityValue = citySelectElement.value;
-  if (
-    anyError(
-      nameValue,
-      emailValue,
-      selectedGenderValue,
-      hobbyValue,
-      countryValue,
-      stateValue,
-      cityValue
-    )
-  ) {
+  if (anyError()) {
     const countryValueFromId = countryName.find((value) => {
       return value._id == countryValue ? true : false;
     });
@@ -482,7 +508,6 @@ function editAllData(event) {
     const stateValueFromId = stateName.find((value) => {
       return value._id == stateValue ? true : false;
     });
-
     dataOfTable[indexWhereToEdit] = {
       ...dataOfTable[indexWhereToEdit],
       hobby: hobbyValue,
@@ -499,7 +524,6 @@ function editAllData(event) {
     formElement.reset();
     indexWhereToEdit = dataOfTable.length;
     resetForm();
-    errorElement.innerHTML = "";
   }
 }
 function resetForm() {
@@ -511,9 +535,7 @@ function resetForm() {
   formElement.removeEventListener("submit", editAllData);
   formElement.addEventListener("submit", submitForm);
   showDataInTable(dataOfTable);
-  errorElement.innerHTML = "";
 }
-
 function formateTheTable() {
   if (formatTableElement.value == "ascending") {
     ascending();
@@ -535,9 +557,8 @@ function descending() {
 }
 
 function search(e) {
-  console.log(e.target.value);
   const filterdData = dataOfTable.filter((value) => {
-    if (value.name.match(e.target.value)) {
+    if (value.name.match(e.target.value.trim())) {
       return true;
     }
     return false;

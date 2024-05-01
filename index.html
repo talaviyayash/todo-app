@@ -7,7 +7,6 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="error"></div>
     <section id="form-container" class="form-container">
       <form id="data-enter-form">
         <h1 id="heading">Add the data</h1>
@@ -15,34 +14,67 @@
           <label for="name">name:-</label>
           <input type="text" name="" id="name" />
           <br />
+          <div id="nameError" class="error"></div>
           <br />
         </div>
         <div class="email">
           <label for="email">email:-</label>
-          <input type="email" name="" id="email" />
+          <input type="email" oninput="validEmail()" name="" id="email" />
+          <br />
+          <div id="emailError" class="error"></div>
+          <br />
         </div>
-        <br /><br />
         <div class="gender">
           <p>Select your gender:-</p>
-          <input type="radio" name="gender" id="male" value="male" />
+          <input
+            type="radio"
+            name="gender"
+            id="male"
+            onchange="validGender()"
+            value="male"
+          />
           <label for="male">Male</label><br />
-          <input type="radio" name="gender" id="female" value="female" />
+          <input
+            type="radio"
+            onchange="validGender()"
+            name="gender"
+            id="female"
+            value="female"
+          />
           <label for="female">Female</label><br />
+          <br />
+          <div id="genderError" class="error"></div>
         </div>
-        <br /><br />
+        <br />
+        <br />
         <div class="hobby">
           <p>Select your hobby:-</p>
-          <input type="checkbox" id="Reading" name="hobby" value="reading" />
+          <input
+            type="checkbox"
+            id="Reading"
+            name="hobby"
+            onchange="validHobby()"
+            value="reading"
+          />
           <label for="Reading"> Reading</label><br />
           <input
             type="checkbox"
             id="Traveling"
             name="hobby"
             value="traveling"
+            onchange="validHobby()"
           />
           <label for="Traveling">Traveling</label><br />
-          <input type="checkbox" id="Sports" name="hobby" value="sports" />
+          <input
+            type="checkbox"
+            onchange="validHobby()"
+            id="Sports"
+            name="hobby"
+            value="sports"
+          />
           <label for="Sports">Sports</label><br />
+          <br />
+          <div id="hobbyError" class="error"></div>
         </div>
         <br /><br />
         <div class="country-show">
@@ -52,6 +84,8 @@
             onchange="loadState(event)"
             id="country"
           ></select>
+          <br />
+          <div id="countryError" class="error"></div>
         </div>
         <br /><br />
         <div class="state-show">
@@ -59,13 +93,17 @@
           <select name="state" id="state" onchange="loadCity(event)">
             <option value="" selected>select one</option>
           </select>
+          <br />
+          <div id="stateError" class="error"></div>
         </div>
         <br /><br />
         <div class="city-show">
           <label for="city">Choose a city:</label>
-          <select name="city" id="city">
+          <select onchange="validCity()" name="city" id="city">
             <option value="" selected>select one</option>
           </select>
+          <br />
+          <div id="cityError" class="error"></div>
         </div>
         <br /><br />
         <div class="action-form">

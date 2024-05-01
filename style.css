@@ -79,3 +79,7 @@ thead tr {
   justify-content: center;
   flex-direction: column;
 }
+.error {
+  font-size: 14px;
+  color: rgb(217, 59, 59);
+}
