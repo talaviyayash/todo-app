@@ -11,14 +11,14 @@
       <form id="data-enter-form">
         <h1 id="heading">Using form add data into the table</h1>
         <div class="name" oninput="validName()">
-          <label for="name" class="font">name:-</label>
+          <label for="name" class="font">Name :-</label>
           <input type="text" name="" id="name" class="input-text" />
           <br />
           <div id="nameError" class="error"></div>
           <br />
         </div>
         <div class="email">
-          <label for="email" class="font">email:-</label>
+          <label for="email" class="font">Email :-</label>
           <input
             type="email"
             oninput="validEmail()"
@@ -31,54 +31,54 @@
           <br />
         </div>
         <div class="gender">
-          <p class="font">Select your gender:-</p>
+          <p class="font">Gender :-</p>
           <input
             type="radio"
             name="gender"
             id="male"
             onchange="validGender()"
-            value="male"
+            value="Male"
           />
-          <label class="for-radio-check" for="male">male</label><br />
+          <label class="for-radio-check" for="male">Male</label><br />
           <input
             type="radio"
             onchange="validGender()"
             name="gender"
             id="female"
-            value="female"
+            value="Female"
           />
-          <label class="for-radio-check" for="female">female</label><br />
+          <label class="for-radio-check" for="female">Female</label><br />
           <br />
           <div id="genderError" class="error"></div>
         </div>
         <br />
         <br />
         <div class="hobby">
-          <p class="font">Select your hobby:-</p>
+          <p class="font">Hobby :-</p>
           <input
             type="checkbox"
             id="Reading"
             name="hobby"
             onchange="validHobby()"
-            value="reading"
+            value="Reading"
           />
-          <label class="for-radio-check" for="Reading"> reading</label><br />
+          <label class="for-radio-check" for="Reading">Reading</label><br />
           <input
             type="checkbox"
             id="Traveling"
             name="hobby"
-            value="traveling"
+            value="Traveling"
             onchange="validHobby()"
           />
-          <label class="for-radio-check" for="Traveling">traveling</label><br />
+          <label class="for-radio-check" for="Traveling">Traveling</label><br />
           <input
             type="checkbox"
             onchange="validHobby()"
             id="Sports"
             name="hobby"
-            value="sports"
+            value="Sports"
           />
-          <label class="for-radio-check" for="Sports">sports</label><br />
+          <label class="for-radio-check" for="Sports">Sports</label><br />
           <br />
           <div id="hobbyError" class="error"></div>
         </div>
@@ -142,12 +142,12 @@
         <select
           class="select-box"
           name="orderInTable"
-          onchange="formateTheTable()"
+          onchange="showDataInTable()"
           id="format"
         >
           <option value="" selected>select choice</option>
-          <option value="ascending">ascending</option>
-          <option value="descending">descending</option>
+          <option value="Ascending">Ascending</option>
+          <option value="Descending">Descending</option>
         </select>
       </div>
       <br />
@@ -159,7 +159,7 @@
             type="text"
             id="search-input"
             class="input-text"
-            oninput="search(event)"
+            oninput="showDataInTable()"
           />
         </div>
       </form>
@@ -181,6 +181,11 @@
         <tbody id="table-body-container"></tbody>
       </table>
     </section>
+    <script src="data.js"></script>
+    <script src="loadOption.js"></script>
+    <script src="crudOperation.js"></script>
+    <script src="showData.js"></script>
     <script src="script.js"></script>
+    <script src="error.js"></script>
   </body>
 </html>

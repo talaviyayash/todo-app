@@ -1,166 +1,102 @@
-const countryName = [
+const dataOfTable = [
   {
-    india: [{ asa: ["dascsd", "dscs"] }, { maharastra: ["dascsd", "dscs"] }],
+    _id: Date.now(),
+    name: "Sdefs",
+    email: "yashtalaviya654@gmail.com",
+    gender: "Male",
+    hobby: ["Reading", "Traveling"],
+    country: { name: "India", _id: 1 },
+    state: {
+      _id: 1,
+      name: "Gujrat",
+    },
+    city: {
+      _id: 1,
+      name: "Surat",
+    },
   },
   {
-    afaric: [
-      { gujrati: ["dascsd", "dscs"] },
-      { maharastra: ["dasdsfvdsfdscsd", "dscs"] },
-    ],
-  },
-  {
-    asdas: [{ sdcqwsd: ["dascascdscsd", "dscs"] }, { sdcsd: ["sdc", "sdcsd"] }],
+    _id: Date.now() + 1,
+    name: "sdesafs",
+    email: "yash@gmail.com",
+    gender: "Male",
+    hobby: ["Reading"],
+    country: { name: "India", _id: 1 },
+    state: {
+      _id: 1,
+      name: "Gujrat",
+    },
+    city: {
+      _id: 1,
+      name: "Surat",
+    },
   },
 ];
-
 const country = [
   {
+    _id: 1,
     name: "India",
     states: [
       {
-        id: "01",
-        name: "gujrat",
-        city: [{ name: "surat", id: "01" }],
+        _id: 1,
+        name: "Gujrat",
+        city: [
+          { _id: 1, name: "Surat" },
+          { _id: 2, name: "Ahemdabad" },
+        ],
+      },
+      {
+        _id: 2,
+        name: "Maharastra",
+        city: [
+          { _id: 1, name: "Mumbai" },
+          { _id: 2, name: "Nagpur" },
+        ],
+      },
+    ],
+  },
+  {
+    _id: 2,
+    name: "Usa",
+    states: [
+      {
+        _id: 1,
+        name: "California",
+        city: [
+          { _id: 1, name: "Los angeles" },
+          { _id: 2, name: "San francisco" },
+        ],
+      },
+      {
+        _id: 2,
+        name: "Texas",
+        city: [
+          { _id: 1, name: "Houston" },
+          { _id: 2, name: "Texas City" },
+        ],
       },
     ],
   },
 ];
-
-export { countryName1, stateName1 };
-
-const countryName2 = [
-  {
-    _id: 1,
-    name: "india",
-  },
-  {
-    _id: 2,
-    name: "usa",
-  },
-];
-
-const stateName = [
-  {
-    _id: 1,
-    c_id: 1,
-    name: "gujrat",
-  },
-  {
-    c_id: 1,
-    _id: 2,
-    name: "haryana",
-  },
-  {
-    c_id: 1,
-    _id: 3,
-    name: "maharashtra",
-  },
-  {
-    c_id: 2,
-    _id: 4,
-    name: "california",
-  },
-  {
-    c_id: 2,
-    _id: 5,
-    name: "texas",
-  },
-  {
-    c_id: 2,
-    _id: 6,
-    name: "florida",
-  },
-];
-
-const cityName = [
-  {
-    _id: 1,
-    s_id: 1,
-    c_id: 1,
-    name: "ahmedabad",
-  },
-  {
-    _id: 2,
-    s_id: 1,
-    c_id: 1,
-    name: "gandhinagar",
-  },
-  {
-    _id: 3,
-    s_id: 1,
-    c_id: 1,
-    name: "surat",
-  },
-  {
-    _id: 4,
-    s_id: 2,
-    c_id: 1,
-    name: "faizabad",
-  },
-  {
-    _id: 5,
-    s_id: 2,
-    c_id: 1,
-    name: "farakhpur",
-  },
-  {
-    _id: 6,
-    s_id: 2,
-    c_id: 1,
-    name: "bhiwani",
-  },
-  {
-    _id: 7,
-    s_id: 3,
-    c_id: 1,
-    name: "mumbai",
-  },
-  {
-    _id: 8,
-    s_id: 3,
-    c_id: 1,
-    name: "Nagpur",
-  },
-  {
-    _id: 9,
-    s_id: 4,
-    c_id: 2,
-    name: "los angeles",
-  },
-  {
-    _id: 10,
-    s_id: 4,
-    c_id: 2,
-    name: "san francisco",
-  },
-  {
-    _id: 11,
-    s_id: 5,
-    c_id: 2,
-    name: "houston",
-  },
-  {
-    _id: 12,
-    s_id: 5,
-    c_id: 2,
-    name: "texas City",
-  },
-  {
-    _id: 13,
-    s_id: 6,
-    c_id: 2,
-    name: "miami",
-  },
-  {
-    _id: 14,
-    s_id: 6,
-    c_id: 2,
-    name: "orlando",
-  },
-  {
-    _id: 15,
-    s_id: 6,
-    c_id: 2,
-    name: "florida city",
-  },
-];
+let indexWhereToEdit;
+let forDisabledTheChild = {};
+let indexOfCountry;
+let indexOfState;
+let submitOrEdit;
+const tableBodyElement = document.getElementById("table-body-container");
+const stateSelectElement = document.getElementById("state");
+const countrySelectElement = document.getElementById("country");
+const citySelectElement = document.getElementById("city");
+const nameInputElement = document.getElementById("name");
+const emailInputElement = document.getElementById("email");
+const nameError = document.getElementById("nameError");
+const emailError = document.getElementById("emailError");
+const genderError = document.getElementById("genderError");
+const hobbyError = document.getElementById("hobbyError");
+const countryError = document.getElementById("countryError");
+const stateError = document.getElementById("stateError");
+const cityError = document.getElementById("cityError");
+const searchInputElement = document.getElementById("search-input");
+const formElement = document.getElementById("data-enter-form");
+const submitBtnElement = document.getElementById("submit");
+const formatTableElement = document.getElementById("format");

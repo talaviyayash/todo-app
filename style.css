@@ -22,7 +22,7 @@ body {
 table,
 th,
 td {
-  border: 1px solid rgb(154, 143, 143);
+  border: 2px solid rgb(201 191 191);
   border-collapse: collapse;
   padding: 26px;
   font-size: 18px;
