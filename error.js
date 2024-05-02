@@ -19,7 +19,6 @@ function anyError() {
 }
 function validName() {
   const nameValue = nameInputElement.value.trim();
-  const regexForName = /^[a-zA-Z\s-]+$/;
   if (nameValue.length < 4 || !(nameValue.search(regexForName) == 0)) {
     nameError.innerHTML = "Please enter the valid name. ";
     return false;
@@ -29,7 +28,6 @@ function validName() {
   }
 }
 function validEmail() {
-  const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const emailValue = emailInputElement.value.trim();
   if (emailValue.length < 6 || !(emailValue.search(regexForEmail) == 0)) {
     emailError.innerHTML = "Please enter the valid email.";

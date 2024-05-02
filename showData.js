@@ -27,14 +27,18 @@ function search() {
   return filterdData;
 }
 function showDataInTable() {
-  tableBodyElement.innerHTML = `<tr class="center">There is no data avilable</tr>`;
+  tableBodyElement.innerHTML = "";
   if (formatTableElement.value == "Ascending") {
     ascending();
   } else if (formatTableElement.value == "Descending") {
     descending();
   }
   const filterdData = search();
-  tableBodyElement.innerHTML = "";
+  if (filterdData.length == 0) {
+    noDataElement.innerHTML = `There is no data avilable`;
+    return 0;
+  }
+  noDataElement.innerHTML = "";
   filterdData.forEach((val) => {
     if (idToAdd == val._id) {
       tableBodyElement.innerHTML =
@@ -50,7 +54,7 @@ function showDataInTable() {
             <td><button onclick="deleteElement(${
               val._id
             })" class="table-delete" style="background-color: rgb(139, 77, 77)" disabled>Delete</button>
-              <a onclick="editFunc(event,${
+              <a onclick="loadEditData(event,${
                 val._id
               })" href="#form-container"><button class="table-remove">Edit</button></a></td>
           </tr>`;
@@ -69,7 +73,7 @@ function showDataInTable() {
             <td><button onclick="deleteElement(${
               val._id
             })" class="table-delete">Delete</button>
-              <a onclick="editFunc(event,${
+              <a onclick="loadEditData(event,${
                 val._id
               })" href="#form-container"><button class="table-remove">Edit</button></a></td>
           </tr>`;

@@ -60,7 +60,7 @@ function submitForm(e) {
       dataOfTable[ind] = newObj;
       idToAdd = undefined;
       submitOrEdit = "submit";
-      resetForm();
+      formetTablet();
       forDisabledTheChild.disabled = false;
       return 0;
     }
@@ -86,11 +86,11 @@ function submitForm(e) {
     };
     dataOfTable[dataOfTable.length] = newObj;
     idToAdd = undefined;
-    resetForm();
+    formetTablet();
     forDisabledTheChild.disabled = false;
   }
 }
-function editFunc(e, idWhereToUpdate) {
+function loadEditData(e, idWhereToUpdate) {
   clearAllError();
   if (forDisabledTheChild?.style?.backgroundColor) {
     forDisabledTheChild.disabled = false;

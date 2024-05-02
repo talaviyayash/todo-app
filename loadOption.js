@@ -15,7 +15,6 @@ function loadState(e) {
       });
     }
   });
-  // country[idOfCountry].forEach((value, index) => {});
 }
 
 function loadCity(e) {

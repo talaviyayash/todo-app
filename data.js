@@ -132,3 +132,4 @@ const searchInputElement = document.getElementById("search-input");
 const formElement = document.getElementById("data-enter-form");
 const submitBtnElement = document.getElementById("submit");
 const formatTableElement = document.getElementById("format");
+const noDataElement = document.getElementById("no-data");
