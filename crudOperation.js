@@ -13,8 +13,8 @@ function deleteElement(elementToBeDeleted) {
 function submitForm(e) {
   const anyErrorInForm = anyError();
   if (anyErrorInForm) {
-    if (indexWhereToEdit == undefined) {
-      indexWhereToEdit = dataOfTable.length;
+    if (idToAdd == undefined) {
+      idToAdd = dataOfTable.length;
     }
     e.preventDefault();
     const nameValue = nameInputElement.value.trim();
@@ -38,7 +38,7 @@ function submitForm(e) {
     if (submitOrEdit == "edit") {
       let ind = 0;
       dataOfTable.forEach((value, index) => {
-        if (value._id == indexWhereToEdit) {
+        if (value._id == idToAdd) {
           ind = index;
         }
       });
@@ -65,7 +65,7 @@ function submitForm(e) {
       submitOrEdit = "submit";
       resetForm();
       forDisabledTheChild.disabled = false;
-      indexWhereToEdit == undefined;
+      idToAdd == undefined;
       return 0;
     }
     const newObj = {
@@ -87,11 +87,11 @@ function submitForm(e) {
         name: countryValueFromId.name,
       },
     };
-    dataOfTable[indexWhereToEdit] = newObj;
+    dataOfTable[idToAdd] = newObj;
     resetForm();
     forDisabledTheChild.disabled = false;
   }
-  indexWhereToEdit == undefined;
+  idToAdd == undefined;
 }
 function editFunc(e, idWhereToUpdate) {
   clearAllError();
@@ -104,14 +104,14 @@ function editFunc(e, idWhereToUpdate) {
   forDisabledTheChild.style.backgroundColor = "#8b4d4d";
   submitBtnElement.innerHTML = "Update the data";
   let indexToAdd;
-  const findValue = dataOfTable.find((value, index) => {
+  const findValue = dataOfTable.find((value) => {
     if (value._id == idWhereToUpdate) {
       indexToAdd = value._id;
       return true;
     }
     return false;
   });
-  indexWhereToEdit = indexToAdd;
+  idToAdd = indexToAdd;
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
   countrySelectElement.innerHTML;
@@ -183,4 +183,5 @@ function editFunc(e, idWhereToUpdate) {
     });
   });
   submitOrEdit = "edit";
+  showDataInTable();
 }

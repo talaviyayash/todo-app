@@ -1,7 +1,7 @@
 const dataOfTable = [
   {
     _id: Date.now(),
-    name: "Sdefs",
+    name: "yash",
     email: "yashtalaviya654@gmail.com",
     gender: "Male",
     hobby: ["Reading", "Traveling"],
@@ -17,9 +17,41 @@ const dataOfTable = [
   },
   {
     _id: Date.now() + 1,
-    name: "sdesafs",
-    email: "yash@gmail.com",
+    name: "abhi",
+    email: "abhi@gmail.com",
     gender: "Male",
+    hobby: ["Reading"],
+    country: { name: "India", _id: 1 },
+    state: {
+      _id: 1,
+      name: "Gujrat",
+    },
+    city: {
+      _id: 1,
+      name: "Surat",
+    },
+  },
+  {
+    _id: Date.now() + 2,
+    name: "aman",
+    email: "aman@gmail.com",
+    gender: "Male",
+    hobby: ["Reading"],
+    country: { name: "India", _id: 1 },
+    state: {
+      _id: 1,
+      name: "Gujrat",
+    },
+    city: {
+      _id: 1,
+      name: "Surat",
+    },
+  },
+  {
+    _id: Date.now() + 3,
+    name: "aana",
+    email: "aana@gmail.com",
+    gender: "Female",
     hobby: ["Reading"],
     country: { name: "India", _id: 1 },
     state: {
@@ -78,7 +110,7 @@ const country = [
     ],
   },
 ];
-let indexWhereToEdit;
+let idToAdd;
 let forDisabledTheChild = {};
 let indexOfCountry;
 let indexOfState;

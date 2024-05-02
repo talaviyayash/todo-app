@@ -3,7 +3,7 @@ firstTimeShow();
 showDataInTable();
 
 function firstTimeShow() {
-  indexWhereToEdit = undefined;
+  idToAdd = undefined;
   submitOrEdit = "submit";
   countrySelectElement.innerHTML = `<option value="" selected>Select country</option>`;
   country.forEach((val) => {

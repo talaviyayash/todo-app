@@ -36,6 +36,26 @@ function showDataInTable() {
   const filterdData = search();
   tableBodyElement.innerHTML = "";
   filterdData.forEach((val) => {
+    if (idToAdd == val._id) {
+      tableBodyElement.innerHTML =
+        tableBodyElement.innerHTML +
+        `<tr>
+            <td>${val.name}</td>
+            <td>${val.email}</td>
+            <td>${val.gender}</td>
+            <td>${val.hobby.join(" , ")}</td>
+            <td> ${val.country.name}</td>
+            <td>${val.state.name}</td>
+            <td>${val.city.name}</td>
+            <td><button onclick="deleteElement(${
+              val._id
+            })" class="table-delete" style="background-color: rgb(139, 77, 77)" disabled>Delete</button>
+              <a onclick="editFunc(event,${
+                val._id
+              })" href="#form-container"><button class="table-remove">Edit</button></a></td>
+          </tr>`;
+      return 0;
+    }
     tableBodyElement.innerHTML =
       tableBodyElement.innerHTML +
       `<tr>
