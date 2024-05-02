@@ -136,7 +136,7 @@ const noDataElement = document.getElementById("no-data");
 function storeToLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
-storeToLocalStorage("dataOfTable", dataOfTable);
+// storeToLocalStorage("dataOfTable", dataOfTable);
 function getToLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
