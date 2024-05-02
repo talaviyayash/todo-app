@@ -5,7 +5,7 @@ showDataInTable();
 function firstTimeShow() {
   indexWhereToEdit = undefined;
   submitOrEdit = "submit";
-  countrySelectElement.innerHTML = `<option value="" selected>select country</option>`;
+  countrySelectElement.innerHTML = `<option value="" selected>Select country</option>`;
   country.forEach((val) => {
     countrySelectElement.innerHTML =
       countrySelectElement.innerHTML +
@@ -26,8 +26,8 @@ function resetForm() {
   clearAllError();
   formElement.reset();
   firstTimeShow();
-  citySelectElement.innerHTML = `<option value="" selected>select city</option>`;
-  stateSelectElement.innerHTML = `<option value="" selected>select state</option>`;
+  citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
+  stateSelectElement.innerHTML = `<option value="" selected>Select state</option>`;
   submitBtnElement.innerHTML = "Submit";
   showDataInTable();
   submitOrEdit = "submit";

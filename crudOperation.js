@@ -11,21 +11,21 @@ function deleteElement(elementToBeDeleted) {
 }
 
 function submitForm(e) {
-  console.log(submitOrEdit);
-  if (indexWhereToEdit == undefined) {
-    indexWhereToEdit = dataOfTable.length;
-  }
-  e.preventDefault();
-  const nameValue = nameInputElement.value.trim();
-  const emailValue = emailInputElement.value.trim();
-  const selectedGenderValue = document.querySelector(
-    'input[name="gender"]:checked'
-  )?.value;
-  const hobbyValue = howManyHobbyIsCheaked();
-  const countryValue = countrySelectElement.value;
-  const stateValue = stateSelectElement.value;
-  const cityValue = citySelectElement.value;
-  if (anyError()) {
+  const anyErrorInForm = anyError();
+  if (anyErrorInForm) {
+    if (indexWhereToEdit == undefined) {
+      indexWhereToEdit = dataOfTable.length;
+    }
+    e.preventDefault();
+    const nameValue = nameInputElement.value.trim();
+    const emailValue = emailInputElement.value.trim();
+    const selectedGenderValue = document.querySelector(
+      'input[name="gender"]:checked'
+    )?.value;
+    const hobbyValue = howManyHobbyIsCheaked();
+    const countryValue = countrySelectElement.value;
+    const stateValue = stateSelectElement.value;
+    const cityValue = citySelectElement.value;
     const countryValueFromId = country.find((value) => {
       return value._id == countryValue ? true : false;
     });
@@ -95,9 +95,13 @@ function submitForm(e) {
 }
 function editFunc(e, idWhereToUpdate) {
   clearAllError();
-  forDisabledTheChild.disabled = false;
+  if (forDisabledTheChild?.style?.backgroundColor) {
+    forDisabledTheChild.disabled = false;
+    forDisabledTheChild.style.backgroundColor = "#e55656";
+  }
   forDisabledTheChild = e.target.parentNode.parentNode.childNodes[0];
   forDisabledTheChild.disabled = true;
+  forDisabledTheChild.style.backgroundColor = "#8b4d4d";
   submitBtnElement.innerHTML = "Update the data";
   let indexToAdd;
   const findValue = dataOfTable.find((value, index) => {
@@ -111,9 +115,9 @@ function editFunc(e, idWhereToUpdate) {
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
   countrySelectElement.innerHTML;
-  citySelectElement.innerHTML = `<option value="" >select city</option>`;
-  stateSelectElement.innerHTML = `<option value="" >select state</option>`;
-  countrySelectElement.innerHTML = `<option value="" >select country</option>`;
+  citySelectElement.innerHTML = `<option value="" >Select city</option>`;
+  stateSelectElement.innerHTML = `<option value="" >Select state</option>`;
+  countrySelectElement.innerHTML = `<option value="" >Select country</option>`;
   let countryIndex;
   let stateIndex;
   country.forEach((value, index) => {

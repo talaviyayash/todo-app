@@ -1,6 +1,6 @@
 function loadState(e) {
-  citySelectElement.innerHTML = `<option value="" selected>select city</option>`;
-  stateSelectElement.innerHTML = `<option value="" selected>select state</option>`;
+  citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
+  stateSelectElement.innerHTML = `<option value="" selected>Select state</option>`;
   const validOrNot = validCountry();
   if (!validOrNot) {
     return false;
@@ -20,7 +20,7 @@ function loadState(e) {
 
 function loadCity(e) {
   const validOrNot = validState();
-  citySelectElement.innerHTML = `<option value="" selected>select city</option>`;
+  citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
   if (!validOrNot) {
     return false;
   }
