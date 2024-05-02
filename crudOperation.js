@@ -59,7 +59,6 @@ function submitForm(e) {
       };
       dataOfTable[ind] = newObj;
       idToAdd = undefined;
-      console.log(idToAdd);
       submitOrEdit = "submit";
       resetForm();
       forDisabledTheChild.disabled = false;

@@ -27,7 +27,6 @@ function search() {
   return filterdData;
 }
 function showDataInTable() {
-  console.log(idToAdd, submitOrEdit);
   tableBodyElement.innerHTML = `<tr class="center">There is no data avilable</tr>`;
   if (formatTableElement.value == "Ascending") {
     ascending();
