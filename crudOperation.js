@@ -5,7 +5,6 @@ function deleteElement(elementToBeDeleted) {
         dataOfTable.splice(index, 1);
       }
     });
-    showDataInTable();
     resetForm();
   }
 }
@@ -13,9 +12,6 @@ function deleteElement(elementToBeDeleted) {
 function submitForm(e) {
   const anyErrorInForm = anyError();
   if (anyErrorInForm) {
-    if (idToAdd == undefined) {
-      idToAdd = dataOfTable.length;
-    }
     e.preventDefault();
     const nameValue = nameInputElement.value.trim();
     const emailValue = emailInputElement.value.trim();
@@ -62,12 +58,14 @@ function submitForm(e) {
         },
       };
       dataOfTable[ind] = newObj;
+      idToAdd = undefined;
+      console.log(idToAdd);
       submitOrEdit = "submit";
       resetForm();
       forDisabledTheChild.disabled = false;
-      idToAdd == undefined;
       return 0;
     }
+
     const newObj = {
       _id: new Date().getMilliseconds(),
       hobby: hobbyValue,
@@ -87,11 +85,11 @@ function submitForm(e) {
         name: countryValueFromId.name,
       },
     };
-    dataOfTable[idToAdd] = newObj;
+    dataOfTable[dataOfTable.length] = newObj;
+    idToAdd = undefined;
     resetForm();
     forDisabledTheChild.disabled = false;
   }
-  idToAdd == undefined;
 }
 function editFunc(e, idWhereToUpdate) {
   clearAllError();
@@ -103,15 +101,13 @@ function editFunc(e, idWhereToUpdate) {
   forDisabledTheChild.disabled = true;
   forDisabledTheChild.style.backgroundColor = "#8b4d4d";
   submitBtnElement.innerHTML = "Update the data";
-  let indexToAdd;
   const findValue = dataOfTable.find((value) => {
     if (value._id == idWhereToUpdate) {
-      indexToAdd = value._id;
+      idToAdd = value._id;
       return true;
     }
     return false;
   });
-  idToAdd = indexToAdd;
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
   countrySelectElement.innerHTML;

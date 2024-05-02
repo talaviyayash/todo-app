@@ -1,9 +1,8 @@
 formElement.addEventListener("submit", submitForm);
-firstTimeShow();
+defaultShow();
 showDataInTable();
 
-function firstTimeShow() {
-  idToAdd = undefined;
+function defaultShow() {
   submitOrEdit = "submit";
   countrySelectElement.innerHTML = `<option value="" selected>Select country</option>`;
   country.forEach((val) => {
@@ -23,9 +22,10 @@ function howManyHobbyIsCheaked() {
   return allValue;
 }
 function resetForm() {
+  console.log(idToAdd);
   clearAllError();
   formElement.reset();
-  firstTimeShow();
+  defaultShow();
   citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
   stateSelectElement.innerHTML = `<option value="" selected>Select state</option>`;
   submitBtnElement.innerHTML = "Submit";
