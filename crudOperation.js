@@ -5,7 +5,7 @@ function deleteElement(elementToBeDeleted) {
         dataOfTable.splice(index, 1);
       }
     });
-    resetForm();
+    showDataInTable();
   }
 }
 

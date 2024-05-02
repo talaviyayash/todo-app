@@ -22,7 +22,7 @@ function howManyHobbyIsCheaked() {
   return allValue;
 }
 function resetForm() {
-  console.log(idToAdd);
+  idToAdd = undefined;
   clearAllError();
   formElement.reset();
   defaultShow();

@@ -117,8 +117,8 @@ thead tr {
   font-size: 20px;
   height: 50px;
   border-radius: 23px;
-  background-color: black;
-  color: white;
+  background-color: #80ffdb;
+  color: black;
   border: 0px;
   font-weight: 500;
 }
@@ -156,6 +156,8 @@ input[type="checkbox"] {
   border: 3px solid black;
   padding: 30px 150px;
   border-radius: 75px;
+  background-color: #524a4a;
+  color: white;
 }
 .action-btn {
   display: flex;
