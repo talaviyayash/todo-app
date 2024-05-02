@@ -1,10 +1,12 @@
 function deleteElement(elementToBeDeleted) {
   if (confirm("Are you sure you want to delete data?")) {
-    dataOfTable.forEach((value, index) => {
+    const dataFromLocalStorage = getToLocalStorage("dataOfTable");
+    dataFromLocalStorage.forEach((value, index) => {
       if (value._id == elementToBeDeleted) {
-        dataOfTable.splice(index, 1);
+        dataFromLocalStorage.splice(index, 1);
       }
     });
+    storeToLocalStorage("dataOfTable", dataFromLocalStorage);
     showDataInTable();
   }
 }
@@ -33,13 +35,14 @@ function submitForm(e) {
     });
     if (submitOrEdit == "edit") {
       let ind = 0;
-      dataOfTable.forEach((value, index) => {
+      const dataFromLocalStorage = getToLocalStorage("dataOfTable");
+      dataFromLocalStorage.forEach((value, index) => {
         if (value._id == idToAdd) {
           ind = index;
         }
       });
       const newObj = {
-        ...dataOfTable[ind],
+        ...dataFromLocalStorage[ind],
         hobby: hobbyValue,
         gender: selectedGenderValue,
         name: nameValue,
@@ -57,14 +60,15 @@ function submitForm(e) {
           name: countryValueFromId.name,
         },
       };
-      dataOfTable[ind] = newObj;
+      dataFromLocalStorage[ind] = newObj;
+      storeToLocalStorage("dataOfTable", dataFromLocalStorage);
       idToAdd = undefined;
       submitOrEdit = "submit";
       formetTablet();
       forDisabledTheChild.disabled = false;
       return 0;
     }
-
+    const dataFromLocalStorage = getToLocalStorage("dataOfTable");
     const newObj = {
       _id: new Date().getMilliseconds(),
       hobby: hobbyValue,
@@ -84,13 +88,15 @@ function submitForm(e) {
         name: countryValueFromId.name,
       },
     };
-    dataOfTable[dataOfTable.length] = newObj;
+    dataFromLocalStorage[dataFromLocalStorage.length] = newObj;
+    storeToLocalStorage("dataOfTable", dataFromLocalStorage);
     idToAdd = undefined;
     formetTablet();
     forDisabledTheChild.disabled = false;
   }
 }
 function loadEditData(e, idWhereToUpdate) {
+  const dataFromLocalStorage = getToLocalStorage("dataOfTable");
   clearAllError();
   if (forDisabledTheChild?.style?.backgroundColor) {
     forDisabledTheChild.disabled = false;
@@ -100,7 +106,7 @@ function loadEditData(e, idWhereToUpdate) {
   forDisabledTheChild.disabled = true;
   forDisabledTheChild.style.backgroundColor = "#8b4d4d";
   submitBtnElement.innerHTML = "Update the data";
-  const findValue = dataOfTable.find((value) => {
+  const findValue = dataFromLocalStorage.find((value) => {
     if (value._id == idWhereToUpdate) {
       idToAdd = value._id;
       return true;

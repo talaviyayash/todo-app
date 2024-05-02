@@ -13,7 +13,13 @@
           <h1 id="heading">Use form to add data in table</h1>
           <div class="name" oninput="validName()">
             <label for="name" class="font">Name :-</label>
-            <input type="text" name="" id="name" class="input-text" />
+            <input
+              type="text"
+              name=""
+              id="name"
+              class="input-text"
+              placeholder="Enter name"
+            />
             <div id="nameError" class="error"></div>
           </div>
           <div class="email">
@@ -24,6 +30,7 @@
               class="input-text"
               name=""
               id="email"
+              placeholder="Enter email"
             />
             <div id="emailError" class="error"></div>
           </div>
@@ -123,6 +130,7 @@
         </form>
       </div>
     </section>
+    <h1 class="title-table">All information user added :-</h1>
 
     <div id="functionality">
       <div class="font">
@@ -146,6 +154,7 @@
             type="text"
             id="search-input"
             class="input-text"
+            placeholder="Enter the search keyword"
             oninput="showDataInTable()"
           />
         </div>

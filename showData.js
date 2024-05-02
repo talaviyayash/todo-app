@@ -1,16 +1,21 @@
 function ascending() {
-  dataOfTable.sort((a, b) => {
+  const dataFromLocalStorage = getToLocalStorage("dataOfTable");
+  dataFromLocalStorage.sort((a, b) => {
     return a.name.localeCompare(b.name);
   });
+  storeToLocalStorage("dataOfTable", dataFromLocalStorage);
 }
 function descending() {
-  dataOfTable.sort((a, b) => {
+  const dataFromLocalStorage = getToLocalStorage("dataOfTable");
+  dataFromLocalStorage.sort((a, b) => {
     return b.name.localeCompare(a.name);
   });
+  storeToLocalStorage("dataOfTable", dataFromLocalStorage);
 }
 function search() {
+  const dataFromLocalStorage = getToLocalStorage("dataOfTable");
   const rege = new RegExp(`${searchInputElement.value.trim()}`, "i");
-  const filterdData = dataOfTable.filter((value) => {
+  const filterdData = dataFromLocalStorage.filter((value) => {
     const findValue =
       value.name.match(rege) ||
       value.email.match(rege) ||
@@ -35,7 +40,7 @@ function showDataInTable() {
   }
   const filterdData = search();
   if (filterdData.length == 0) {
-    noDataElement.innerHTML = `There is no data avilable`;
+    noDataElement.innerHTML = `There is no data available.`;
     return 0;
   }
   noDataElement.innerHTML = "";
