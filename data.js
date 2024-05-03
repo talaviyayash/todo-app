@@ -133,10 +133,5 @@ const formElement = document.getElementById("data-enter-form");
 const submitBtnElement = document.getElementById("submit");
 const formatTableElement = document.getElementById("format");
 const noDataElement = document.getElementById("no-data");
-function storeToLocalStorage(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
-// storeToLocalStorage("dataOfTable", dataOfTable);
-function getToLocalStorage(key) {
-  return JSON.parse(localStorage.getItem(key));
-}
+const regexForName = /^[a-zA-Z\s-]+$/;
+const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

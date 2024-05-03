@@ -15,7 +15,7 @@
             <label for="name" class="font">Name :-</label>
             <input
               type="text"
-              name=""
+              name="name"
               id="name"
               class="input-text"
               placeholder="Enter name"
@@ -28,7 +28,7 @@
               type="email"
               oninput="validEmail()"
               class="input-text"
-              name=""
+              name="email"
               id="email"
               placeholder="Enter email"
             />
@@ -130,38 +130,34 @@
         </form>
       </div>
     </section>
-    <h1 class="title-table">All information user added :-</h1>
 
     <div id="functionality">
       <div class="font">
-        Ascending / Descending:-
+        <form>
+          <div class="font">
+            <input
+              type="text"
+              id="search-input"
+              class="input-text"
+              placeholder="Enter the search keyword"
+              oninput="showDataInTable()"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+    <section class="table-container">
+      <table style="position: relative">
         <select
           class="select-box"
           name="orderInTable"
           onchange="showDataInTable()"
           id="format"
         >
-          <option value="" selected>Select choice</option>
+          <option value="" selected>Select sort</option>
           <option value="Ascending">Ascending</option>
           <option value="Descending">Descending</option>
         </select>
-      </div>
-
-      <form>
-        <div class="font">
-          Search from the table :-
-          <input
-            type="text"
-            id="search-input"
-            class="input-text"
-            placeholder="Enter the search keyword"
-            oninput="showDataInTable()"
-          />
-        </div>
-      </form>
-    </div>
-    <section class="table-container">
-      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -179,11 +175,6 @@
     </section>
     <div id="no-data"></div>
     <script src="data.js"></script>
-    <script src="regex.js"></script>
-    <script src="loadOption.js"></script>
-    <script src="crudOperation.js"></script>
-    <script src="showData.js"></script>
     <script src="script.js"></script>
-    <script src="error.js"></script>
   </body>
 </html>
