@@ -1,3 +1,38 @@
+let idToEdit;
+let indexOfCountry;
+let indexOfState;
+let submitOrEdit;
+const tableBodyElement = document.getElementById("table-body-container");
+const stateSelectElement = document.getElementById("state");
+const countrySelectElement = document.getElementById("country");
+const citySelectElement = document.getElementById("city");
+const nameInputElement = document.getElementById("name");
+const emailInputElement = document.getElementById("email");
+const nameError = document.getElementById("nameError");
+const emailError = document.getElementById("emailError");
+const genderError = document.getElementById("genderError");
+const hobbyError = document.getElementById("hobbyError");
+const countryError = document.getElementById("countryError");
+const stateError = document.getElementById("stateError");
+const cityError = document.getElementById("cityError");
+const searchInputElement = document.getElementById("search-input");
+const formElement = document.getElementById("data-enter-form");
+const submitBtnElement = document.getElementById("submit");
+const formatTableElement = document.getElementById("format");
+const noDataElement = document.getElementById("no-data");
+const MODES = {
+  SUBMIT: "SUBMIT",
+  EDIT: "EDIT",
+};
+const ALL_ERROR_IN_ARRAY = [
+  nameError,
+  emailError,
+  genderError,
+  hobbyError,
+  countryError,
+  stateError,
+  cityError,
+];
 const dataForTable = getToLocalStorage("dataOfTable");
 if (!dataForTable || dataForTable.length == 0) {
   storeToLocalStorage("dataOfTable", dataOfTable);
@@ -5,8 +40,7 @@ if (!dataForTable || dataForTable.length == 0) {
 formElement.addEventListener("submit", submitForm);
 defaultToShow();
 showDataInTable();
-
-function optionMake(value, innerText, selected) {
+function optionMaker(value, innerText, selected) {
   return `<option value="${value}" ${
     selected ? "selected" : ""
   }>${innerText}</option>`;
@@ -16,13 +50,13 @@ function defaultToShow() {
   submitOrEdit = MODES.SUBMIT;
   submitBtnElement.innerHTML = "Submit";
   idToEdit = undefined;
-  countrySelectElement.innerHTML = optionMake("", "Select country", true);
+  countrySelectElement.innerHTML = optionMaker("", "Select country", true);
   country.forEach((val) => {
     countrySelectElement.innerHTML =
-      countrySelectElement.innerHTML + optionMake(val._id, val.name, false);
+      countrySelectElement.innerHTML + optionMaker(val._id, val.name, false);
   });
-  citySelectElement.innerHTML = optionMake("", "Select city", true);
-  stateSelectElement.innerHTML = optionMake("", "Select state", true);
+  citySelectElement.innerHTML = optionMaker("", "Select city", true);
+  stateSelectElement.innerHTML = optionMaker("", "Select state", true);
 }
 
 function hobbyCheakeArray() {
@@ -44,20 +78,17 @@ function resetPage() {
 function deleteElement(elementToBeDeleted) {
   if (confirm("Are you sure you want to delete data?")) {
     const dataFromLocalStorage = getToLocalStorage("dataOfTable");
-    dataFromLocalStorage.forEach((value, index) => {
-      if (value._id == elementToBeDeleted) {
-        dataFromLocalStorage.splice(index, 1);
-      }
+    const updatedArr = dataFromLocalStorage.filter((value) => {
+      return !(value._id == elementToBeDeleted);
     });
-    storeToLocalStorage("dataOfTable", dataFromLocalStorage);
+    storeToLocalStorage("dataOfTable", updatedArr);
     showDataInTable();
   }
 }
-
 function submitForm(e) {
   e.preventDefault();
-  const anyErrorInForm = anyError();
-  if (!anyErrorInForm) {
+  const isAllFieldValidate = allFieldValidate();
+  if (isAllFieldValidate) {
     const nameValue = nameInputElement.value.trim();
     const emailValue = emailInputElement.value.trim();
     const selectedGenderValue = document.querySelector(
@@ -76,9 +107,7 @@ function submitForm(e) {
     const cityValueFromId = stateValueFromId.city.find((value) => {
       return value._id == cityValue ? true : false;
     });
-    let getIndexFromId;
     const dataFromLocalStorage = getToLocalStorage("dataOfTable");
-
     const newObj = {
       hobby: hobbyValue,
       gender: selectedGenderValue,
@@ -97,89 +126,58 @@ function submitForm(e) {
         name: countryValueFromId.name,
       },
     };
-
     const updatedArr =
       submitOrEdit == MODES.EDIT
         ? dataFromLocalStorage.map((item) => {
-            if (item._id == idToEdit) {
-              return { _id: item._id, ...newObj };
-            } else {
-              return true;
-            }
+            return item._id == idToEdit ? { _id: item._id, ...newObj } : item;
           })
         : [...dataFromLocalStorage, { _id: Date.now(), ...newObj }];
-    // getIndexFromId = dataFromLocalStorage.findIndex((value) => {
-    //   return value._id == idToEdit;
-    // });
-    // const updatedArray = dataFromLocalStorage.map((value) => {
-    // console.log(value);
-    // });
-
-    // dataFromLocalStorage[
-    //   submitOrEdit == MODES.EDIT ? getIndexFromId : dataFromLocalStorage.length
-    // ] = newObj;
     storeToLocalStorage("dataOfTable", updatedArr);
     resetPage();
   }
 }
-
 function loadEditDataInTable(idWhereToUpdate) {
-  idToEdit = idWhereToUpdate;
-  const dataFromLocalStorage = getToLocalStorage("dataOfTable");
   clearAllError();
+  idToEdit = idWhereToUpdate;
   submitBtnElement.innerHTML = "Update the data";
-  const findValue = dataFromLocalStorage.find((value) => {
-    if (value._id == idWhereToUpdate) {
-      return true;
-    }
-    return false;
-  });
+  const dataFromLocalStorage = getToLocalStorage("dataOfTable");
+  const findValue = dataFromLocalStorage.find((value) => value._id == idToEdit);
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
   countrySelectElement.innerHTML;
-  citySelectElement.innerHTML = optionMake("", "Select city", false);
-  stateSelectElement.innerHTML = optionMake("", "Select state", false);
-  countrySelectElement.innerHTML = optionMake("", "Select country", false);
+  citySelectElement.innerHTML = optionMaker("", "Select city", false);
+  stateSelectElement.innerHTML = optionMaker("", "Select state", false);
+  countrySelectElement.innerHTML = optionMaker("", "Select country", false);
   let countryIndex;
   let stateIndex;
   country.forEach((value, index) => {
-    const valueFound = value._id == findValue.country._id;
-    if (valueFound) {
-      countryIndex = index;
-    }
+    const isValueFound = value._id == findValue.country._id;
+    countryIndex = isValueFound ? index : countryIndex;
     countrySelectElement.innerHTML =
       countrySelectElement.innerHTML +
-      optionMake(value._id, value.name, valueFound);
+      optionMaker(value._id, value.name, isValueFound);
   });
   country[countryIndex].states.forEach((value, index) => {
-    const valueFound = value._id == findValue.state._id;
-    if (valueFound) {
-      stateIndex = index;
-    }
+    const isValueFound = value._id == findValue.state._id;
+    stateIndex = isValueFound ? index : stateIndex;
     stateSelectElement.innerHTML =
       stateSelectElement.innerHTML +
-      optionMake(value._id, value.name, valueFound);
+      optionMaker(value._id, value.name, isValueFound);
   });
   country[countryIndex].states[stateIndex].city.forEach((value) => {
-    const valueFound = value._id == findValue.city._id;
+    const isValueFound = value._id == findValue.city._id;
     citySelectElement.innerHTML =
       citySelectElement.innerHTML +
-      optionMake(value._id, value.name, valueFound);
+      optionMaker(value._id, value.name, isValueFound);
   });
   document.querySelectorAll('input[name="gender"]').forEach((element) => {
-    if (element.value == findValue.gender) {
-      element.checked = true;
-    }
+    element.checked = element.value == findValue.gender ? true : false;
   });
   document.querySelectorAll('input[name="hobby"]').forEach((element) => {
     element.checked = false;
   });
-  findValue.hobby.forEach((value) => {
-    document.querySelectorAll('input[name="hobby"]').forEach((element) => {
-      if (element.value == value) {
-        element.checked = true;
-      }
-    });
+  document.querySelectorAll('input[name="hobby"]').forEach((element) => {
+    element.checked = findValue.hobby.includes(element.value) ? true : false;
   });
   submitOrEdit = MODES.EDIT;
   showDataInTable();
@@ -193,7 +191,7 @@ function storeToLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-function anyError() {
+function allFieldValidate() {
   const forName = validName();
   const forEmail = validEmail();
   const forGender = validGender();
@@ -201,7 +199,7 @@ function anyError() {
   const forCountry = validCountry();
   const forState = validState();
   const forCity = validCity();
-  const isAnyError =
+  const allValidate =
     forName &&
     forEmail &&
     forGender &&
@@ -209,7 +207,7 @@ function anyError() {
     forCountry &&
     forState &&
     forCity;
-  return !isAnyError;
+  return allValidate;
 }
 
 function validName() {
@@ -238,7 +236,6 @@ function validGender() {
   const selectedGenderValue = document.querySelector(
     'input[name="gender"]:checked'
   )?.value;
-
   if (!selectedGenderValue) {
     genderError.innerHTML = "Please select your gender. ";
     return false;
@@ -299,8 +296,8 @@ function clearAllError() {
 }
 
 function loadState(e) {
-  citySelectElement.innerHTML = optionMake("", "Select city", true);
-  stateSelectElement.innerHTML = optionMake("", "Select state", true);
+  citySelectElement.innerHTML = optionMaker("", "Select city", true);
+  stateSelectElement.innerHTML = optionMaker("", "Select state", true);
   const validOrNot = validCountry();
   if (!validOrNot) {
     return false;
@@ -319,7 +316,7 @@ function loadState(e) {
 
 function loadCity(e) {
   const validOrNot = validState();
-  citySelectElement.innerHTML = optionMake("", "Select city", true);
+  citySelectElement.innerHTML = optionMaker("", "Select city", true);
   if (!validOrNot) {
     return false;
   }
@@ -374,14 +371,12 @@ function search(dataToShow) {
 
 function showDataInTable() {
   tableBodyElement.innerHTML = "";
-  let dataToShow;
-  if (formatTableElement.value == "Ascending") {
-    dataToShow = ascending();
-  } else if (formatTableElement.value == "Descending") {
-    dataToShow = descending();
-  } else {
-    dataToShow = getToLocalStorage("dataOfTable");
-  }
+  let dataToShow =
+    formatTableElement.value == "Ascending"
+      ? ascending()
+      : formatTableElement.value == "Descending"
+      ? descending()
+      : getToLocalStorage("dataOfTable");
   const filterdData = search(dataToShow);
   if (filterdData.length == 0) {
     noDataElement.innerHTML = `There is no data available.`;

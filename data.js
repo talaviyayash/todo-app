@@ -110,40 +110,5 @@ const country = [
     ],
   },
 ];
-let idToEdit;
-let indexOfCountry;
-let indexOfState;
-let submitOrEdit;
-const tableBodyElement = document.getElementById("table-body-container");
-const stateSelectElement = document.getElementById("state");
-const countrySelectElement = document.getElementById("country");
-const citySelectElement = document.getElementById("city");
-const nameInputElement = document.getElementById("name");
-const emailInputElement = document.getElementById("email");
-const nameError = document.getElementById("nameError");
-const emailError = document.getElementById("emailError");
-const genderError = document.getElementById("genderError");
-const hobbyError = document.getElementById("hobbyError");
-const countryError = document.getElementById("countryError");
-const stateError = document.getElementById("stateError");
-const cityError = document.getElementById("cityError");
-const searchInputElement = document.getElementById("search-input");
-const formElement = document.getElementById("data-enter-form");
-const submitBtnElement = document.getElementById("submit");
-const formatTableElement = document.getElementById("format");
-const noDataElement = document.getElementById("no-data");
 const regexForName = /^[a-zA-Z\s-]+$/;
 const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const MODES = {
-  SUBMIT: "SUBMIT",
-  EDIT: "EDIT",
-};
-const ALL_ERROR_IN_ARRAY = [
-  nameError,
-  emailError,
-  genderError,
-  hobbyError,
-  countryError,
-  stateError,
-  cityError,
-];
