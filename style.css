@@ -89,9 +89,9 @@ thead tr {
   flex-direction: column;
 }
 .error {
-  font-size: 20px;
+  font-size: 15px;
   color: #e55656;
-  margin-left: 20px;
+  margin-left: 22px;
   height: 20px;
 }
 .input-text {
@@ -101,7 +101,7 @@ thead tr {
   font-size: 17px;
   margin-bottom: 20px;
   border: 1px solid;
-  border-radius: 15px;
+  border-radius: 5px;
   background-color: white;
 }
 .font {
@@ -206,13 +206,10 @@ input[type="checkbox"] {
   top: -39px;
   margin-bottom: 10px;
 }
-tbody {
-  height: 200px !important;
-  overflow-y: scroll !important;
-}
+
 table {
   width: 100%;
-  overflow-y: scroll;
+  overflow: scroll;
 }
 #search-input {
   position: absolute;

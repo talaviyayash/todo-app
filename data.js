@@ -110,8 +110,7 @@ const country = [
     ],
   },
 ];
-let idToAdd;
-let forDisabledTheChild = {};
+let idToEdit;
 let indexOfCountry;
 let indexOfState;
 let submitOrEdit;
@@ -135,3 +134,16 @@ const formatTableElement = document.getElementById("format");
 const noDataElement = document.getElementById("no-data");
 const regexForName = /^[a-zA-Z\s-]+$/;
 const regexForEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MODES = {
+  SUBMIT: "SUBMIT",
+  EDIT: "EDIT",
+};
+const ALL_ERROR_IN_ARRAY = [
+  nameError,
+  emailError,
+  genderError,
+  hobbyError,
+  countryError,
+  stateError,
+  cityError,
+];

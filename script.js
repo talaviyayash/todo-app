@@ -1,22 +1,31 @@
 const dataForTable = getToLocalStorage("dataOfTable");
-if (!dataForTable || dataOfTable.length == 0) {
+if (!dataForTable || dataForTable.length == 0) {
   storeToLocalStorage("dataOfTable", dataOfTable);
 }
 formElement.addEventListener("submit", submitForm);
 defaultToShow();
 showDataInTable();
+
+function optionMake(value, innerText, selected) {
+  return `<option value="${value}" ${
+    selected ? "selected" : ""
+  }>${innerText}</option>`;
+}
+
 function defaultToShow() {
-  submitOrEdit = "submit";
-  countrySelectElement.innerHTML = `<option value="" selected>Select country</option>`;
+  submitOrEdit = MODES.SUBMIT;
+  submitBtnElement.innerHTML = "Submit";
+  idToEdit = undefined;
+  countrySelectElement.innerHTML = optionMake("", "Select country", true);
   country.forEach((val) => {
     countrySelectElement.innerHTML =
-      countrySelectElement.innerHTML +
-      `
-  <option value="${val._id}">${val.name}</option>;
-    `;
+      countrySelectElement.innerHTML + optionMake(val._id, val.name, false);
   });
+  citySelectElement.innerHTML = optionMake("", "Select city", true);
+  stateSelectElement.innerHTML = optionMake("", "Select state", true);
 }
-function howManyHobbyIsCheaked() {
+
+function hobbyCheakeArray() {
   var checkedBoxes = document.querySelectorAll("input[name=hobby]:checked");
   const allValue = [];
   checkedBoxes.forEach((value) => {
@@ -24,17 +33,14 @@ function howManyHobbyIsCheaked() {
   });
   return allValue;
 }
-function formetTablet() {
-  idToAdd = undefined;
+
+function resetPage() {
   clearAllError();
   formElement.reset();
   defaultToShow();
-  citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
-  stateSelectElement.innerHTML = `<option value="" selected>Select state</option>`;
-  submitBtnElement.innerHTML = "Submit";
   showDataInTable();
-  submitOrEdit = "submit";
 }
+
 function deleteElement(elementToBeDeleted) {
   if (confirm("Are you sure you want to delete data?")) {
     const dataFromLocalStorage = getToLocalStorage("dataOfTable");
@@ -51,13 +57,13 @@ function deleteElement(elementToBeDeleted) {
 function submitForm(e) {
   e.preventDefault();
   const anyErrorInForm = anyError();
-  if (anyErrorInForm) {
+  if (!anyErrorInForm) {
     const nameValue = nameInputElement.value.trim();
     const emailValue = emailInputElement.value.trim();
     const selectedGenderValue = document.querySelector(
       'input[name="gender"]:checked'
     )?.value;
-    const hobbyValue = howManyHobbyIsCheaked();
+    const hobbyValue = hobbyCheakeArray();
     const countryValue = countrySelectElement.value;
     const stateValue = stateSelectElement.value;
     const cityValue = citySelectElement.value;
@@ -70,44 +76,10 @@ function submitForm(e) {
     const cityValueFromId = stateValueFromId.city.find((value) => {
       return value._id == cityValue ? true : false;
     });
-    if (submitOrEdit == "edit") {
-      let ind = 0;
-      const dataFromLocalStorage = getToLocalStorage("dataOfTable");
-      dataFromLocalStorage.forEach((value, index) => {
-        if (value._id == idToAdd) {
-          ind = index;
-        }
-      });
-      const newObj = {
-        ...dataFromLocalStorage[ind],
-        hobby: hobbyValue,
-        gender: selectedGenderValue,
-        name: nameValue,
-        email: emailValue,
-        state: {
-          _id: stateValueFromId._id,
-          name: stateValueFromId.name,
-        },
-        city: {
-          _id: cityValueFromId._id,
-          name: cityValueFromId.name,
-        },
-        country: {
-          _id: countryValueFromId._id,
-          name: countryValueFromId.name,
-        },
-      };
-      dataFromLocalStorage[ind] = newObj;
-      storeToLocalStorage("dataOfTable", dataFromLocalStorage);
-      idToAdd = undefined;
-      submitOrEdit = "submit";
-      formetTablet();
-      forDisabledTheChild.disabled = false;
-      return 0;
-    }
+    let getIndexFromId;
     const dataFromLocalStorage = getToLocalStorage("dataOfTable");
+
     const newObj = {
-      _id: Date.now(),
       hobby: hobbyValue,
       gender: selectedGenderValue,
       name: nameValue,
@@ -125,27 +97,39 @@ function submitForm(e) {
         name: countryValueFromId.name,
       },
     };
-    dataFromLocalStorage[dataFromLocalStorage.length] = newObj;
-    storeToLocalStorage("dataOfTable", dataFromLocalStorage);
-    idToAdd = undefined;
-    formetTablet();
-    forDisabledTheChild.disabled = false;
+
+    const updatedArr =
+      submitOrEdit == MODES.EDIT
+        ? dataFromLocalStorage.map((item) => {
+            if (item._id == idToEdit) {
+              return { _id: item._id, ...newObj };
+            } else {
+              return true;
+            }
+          })
+        : [...dataFromLocalStorage, { _id: Date.now(), ...newObj }];
+    // getIndexFromId = dataFromLocalStorage.findIndex((value) => {
+    //   return value._id == idToEdit;
+    // });
+    // const updatedArray = dataFromLocalStorage.map((value) => {
+    // console.log(value);
+    // });
+
+    // dataFromLocalStorage[
+    //   submitOrEdit == MODES.EDIT ? getIndexFromId : dataFromLocalStorage.length
+    // ] = newObj;
+    storeToLocalStorage("dataOfTable", updatedArr);
+    resetPage();
   }
 }
-function loadEditData(e, idWhereToUpdate) {
+
+function loadEditDataInTable(idWhereToUpdate) {
+  idToEdit = idWhereToUpdate;
   const dataFromLocalStorage = getToLocalStorage("dataOfTable");
   clearAllError();
-  if (forDisabledTheChild?.style?.backgroundColor) {
-    forDisabledTheChild.disabled = false;
-    forDisabledTheChild.style.backgroundColor = "#e55656";
-  }
-  forDisabledTheChild = e.target.parentNode.parentNode.childNodes[0];
-  forDisabledTheChild.disabled = true;
-  forDisabledTheChild.style.backgroundColor = "#8b4d4d";
   submitBtnElement.innerHTML = "Update the data";
   const findValue = dataFromLocalStorage.find((value) => {
     if (value._id == idWhereToUpdate) {
-      idToAdd = value._id;
       return true;
     }
     return false;
@@ -153,57 +137,34 @@ function loadEditData(e, idWhereToUpdate) {
   nameInputElement.value = findValue.name;
   emailInputElement.value = findValue.email;
   countrySelectElement.innerHTML;
-  citySelectElement.innerHTML = `<option value="" >Select city</option>`;
-  stateSelectElement.innerHTML = `<option value="" >Select state</option>`;
-  countrySelectElement.innerHTML = `<option value="" >Select country</option>`;
+  citySelectElement.innerHTML = optionMake("", "Select city", false);
+  stateSelectElement.innerHTML = optionMake("", "Select state", false);
+  countrySelectElement.innerHTML = optionMake("", "Select country", false);
   let countryIndex;
   let stateIndex;
   country.forEach((value, index) => {
-    if (value._id == findValue.country._id) {
+    const valueFound = value._id == findValue.country._id;
+    if (valueFound) {
       countryIndex = index;
-      countrySelectElement.innerHTML =
-        countrySelectElement.innerHTML +
-        `
-  <option value="${value._id}" selected>${value.name}</option>;
-    `;
-    } else {
-      countrySelectElement.innerHTML =
-        countrySelectElement.innerHTML +
-        `
-  <option value="${value._id}">${value.name}</option>;
-    `;
     }
+    countrySelectElement.innerHTML =
+      countrySelectElement.innerHTML +
+      optionMake(value._id, value.name, valueFound);
   });
   country[countryIndex].states.forEach((value, index) => {
-    if (value._id == findValue.state._id) {
+    const valueFound = value._id == findValue.state._id;
+    if (valueFound) {
       stateIndex = index;
-      stateSelectElement.innerHTML =
-        stateSelectElement.innerHTML +
-        `
-  <option value="${value._id}" selected>${value.name}</option>;
-    `;
-    } else {
-      stateSelectElement.innerHTML =
-        stateSelectElement.innerHTML +
-        `
-  <option value="${value._id}">${value.name}</option>;
-    `;
     }
+    stateSelectElement.innerHTML =
+      stateSelectElement.innerHTML +
+      optionMake(value._id, value.name, valueFound);
   });
   country[countryIndex].states[stateIndex].city.forEach((value) => {
-    if (value._id == findValue.city._id) {
-      citySelectElement.innerHTML =
-        citySelectElement.innerHTML +
-        `
-  <option value="${value._id}" selected>${value.name}</option>;
-    `;
-    } else {
-      citySelectElement.innerHTML =
-        citySelectElement.innerHTML +
-        `
-  <option value="${value._id}">${value.name}</option>;
-    `;
-    }
+    const valueFound = value._id == findValue.city._id;
+    citySelectElement.innerHTML =
+      citySelectElement.innerHTML +
+      optionMake(value._id, value.name, valueFound);
   });
   document.querySelectorAll('input[name="gender"]').forEach((element) => {
     if (element.value == findValue.gender) {
@@ -220,15 +181,18 @@ function loadEditData(e, idWhereToUpdate) {
       }
     });
   });
-  submitOrEdit = "edit";
+  submitOrEdit = MODES.EDIT;
   showDataInTable();
 }
+
 function getToLocalStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
+
 function storeToLocalStorage(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
+
 function anyError() {
   const forName = validName();
   const forEmail = validEmail();
@@ -237,17 +201,17 @@ function anyError() {
   const forCountry = validCountry();
   const forState = validState();
   const forCity = validCity();
-
-  return (
+  const isAnyError =
     forName &&
     forEmail &&
     forGender &&
     forHobby &&
     forCountry &&
     forState &&
-    forCity
-  );
+    forCity;
+  return !isAnyError;
 }
+
 function validName() {
   const nameValue = nameInputElement.value.trim();
   if (nameValue.length < 4 || !(nameValue.search(regexForName) == 0)) {
@@ -258,6 +222,7 @@ function validName() {
     return true;
   }
 }
+
 function validEmail() {
   const emailValue = emailInputElement.value.trim();
   if (emailValue.length < 6 || !(emailValue.search(regexForEmail) == 0)) {
@@ -268,6 +233,7 @@ function validEmail() {
     return true;
   }
 }
+
 function validGender() {
   const selectedGenderValue = document.querySelector(
     'input[name="gender"]:checked'
@@ -281,8 +247,9 @@ function validGender() {
     return true;
   }
 }
+
 function validHobby() {
-  const hobbyValue = howManyHobbyIsCheaked();
+  const hobbyValue = hobbyCheakeArray();
   if (hobbyValue.length == 0) {
     hobbyError.innerHTML = "Please select your hobby ";
     return false;
@@ -291,6 +258,7 @@ function validHobby() {
     return true;
   }
 }
+
 function validCountry() {
   const countryValue = countrySelectElement.value.trim();
   if (!countryValue) {
@@ -301,6 +269,7 @@ function validCountry() {
     return true;
   }
 }
+
 function validState() {
   const stateValue = stateSelectElement.value.trim();
   if (!stateValue) {
@@ -311,6 +280,7 @@ function validState() {
     return true;
   }
 }
+
 function validCity() {
   const cityValue = citySelectElement.value;
   if (!cityValue) {
@@ -321,22 +291,16 @@ function validCity() {
     return true;
   }
 }
+
 function clearAllError() {
-  [
-    nameError,
-    emailError,
-    genderError,
-    hobbyError,
-    countryError,
-    stateError,
-    cityError,
-  ].forEach((element) => {
+  ALL_ERROR_IN_ARRAY.forEach((element) => {
     element.innerHTML = "";
   });
 }
+
 function loadState(e) {
-  citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
-  stateSelectElement.innerHTML = `<option value="" selected>Select state</option>`;
+  citySelectElement.innerHTML = optionMake("", "Select city", true);
+  stateSelectElement.innerHTML = optionMake("", "Select state", true);
   const validOrNot = validCountry();
   if (!validOrNot) {
     return false;
@@ -352,9 +316,10 @@ function loadState(e) {
     }
   });
 }
+
 function loadCity(e) {
   const validOrNot = validState();
-  citySelectElement.innerHTML = `<option value="" selected>Select city</option>`;
+  citySelectElement.innerHTML = optionMake("", "Select city", true);
   if (!validOrNot) {
     return false;
   }
@@ -374,6 +339,7 @@ function loadCity(e) {
     }
   });
 }
+
 function ascending() {
   const dataFromLocalStorage = getToLocalStorage("dataOfTable");
   dataFromLocalStorage.sort((a, b) => {
@@ -381,6 +347,7 @@ function ascending() {
   });
   return dataFromLocalStorage;
 }
+
 function descending() {
   const dataFromLocalStorage = getToLocalStorage("dataOfTable");
   dataFromLocalStorage.sort((a, b) => {
@@ -388,6 +355,7 @@ function descending() {
   });
   return dataFromLocalStorage;
 }
+
 function search(dataToShow) {
   const rege = new RegExp(`${searchInputElement.value.trim()}`, "i");
   const filterdData = dataToShow.filter((value) => {
@@ -403,6 +371,7 @@ function search(dataToShow) {
   });
   return filterdData;
 }
+
 function showDataInTable() {
   tableBodyElement.innerHTML = "";
   let dataToShow;
@@ -420,26 +389,6 @@ function showDataInTable() {
   }
   noDataElement.innerHTML = "";
   filterdData.forEach((val) => {
-    if (idToAdd == val._id) {
-      tableBodyElement.innerHTML =
-        tableBodyElement.innerHTML +
-        `<tr>
-            <td>${val.name}</td>
-            <td>${val.email}</td>
-            <td>${val.gender}</td>
-            <td>${val.hobby.join(" , ")}</td>
-            <td> ${val.country.name}</td>
-            <td>${val.state.name}</td>
-            <td>${val.city.name}</td>
-            <td><button onclick="deleteElement(${
-              val._id
-            })" class="table-delete" style="background-color: rgb(139, 77, 77)" disabled>Delete</button>
-              <a onclick="loadEditData(event,${
-                val._id
-              })" href="#form-container"><button class="table-remove">Edit</button></a></td>
-          </tr>`;
-      return 0;
-    }
     tableBodyElement.innerHTML =
       tableBodyElement.innerHTML +
       `<tr>
@@ -450,10 +399,14 @@ function showDataInTable() {
             <td> ${val.country.name}</td>
             <td>${val.state.name}</td>
             <td>${val.city.name}</td>
-            <td><button onclick="deleteElement(${
-              val._id
-            })" class="table-delete">Delete</button>
-              <a onclick="loadEditData(event,${
+            <td><button onclick="deleteElement(${val._id})" class="table-delete"
+            ${
+              idToEdit == val._id
+                ? 'style="background-color: rgb(139, 77, 77)" disabled'
+                : ""
+            }
+            >Delete</button>
+              <a onclick="loadEditDataInTable(${
                 val._id
               })" href="#form-container"><button class="table-remove">Edit</button></a></td>
           </tr>`;
